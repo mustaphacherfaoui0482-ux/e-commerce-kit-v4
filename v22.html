@@ -300,9 +300,9 @@ ANALYSER LE BUSINESS
 <div class="metric">
 <small>Score Business</small>
 <strong id="businessScore">0 / 100</strong>
-</div>
 <div id="businessScoreDetails" class="note">
 Analyse du score...
+</div>
 </div>
 <div class="metric">
 <small>Commandes</small>
@@ -659,6 +659,15 @@ var startingCash=n("startingCash");
 
 if(orders<=0){
 document.getElementById("businessScore").textContent="0 / 100";
+  var details =
+"CAC : "+cac.toFixed(2)+" €<br>"+
+"ROAS : "+roas.toFixed(2)+"<br>"+
+"Marge : "+margin.toFixed(1)+" %<br>"+
+"Stock : "+stock+" unités<br>"+
+"Trésorerie : "+euro(cash);
+
+document.getElementById("businessScoreDetails").innerHTML =
+details;
 return;
 }
 
