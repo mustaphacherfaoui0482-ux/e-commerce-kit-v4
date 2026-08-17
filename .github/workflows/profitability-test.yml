@@ -1,0 +1,23 @@
+name: Profitability Engine Test
+
+on:
+  push:
+    branches:
+      - v4-development
+  workflow_dispatch:
+
+jobs:
+  test-profitability-engine:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Run profitability engine tests
+        run: node --experimental-default-type=module v4/engines/profitability-engine.test.js
