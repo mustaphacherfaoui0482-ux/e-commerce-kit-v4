@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+<title>E-COMMERCE KIT V4 — V2.1</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3f5f8;
+  color:#172033;
+}
+header{
+  background:#101827;
+  color:white;
+  padding:20px;
+}
+header h1{margin:0;font-size:21px}
+header p{margin:6px 0 0;font-size:12px;opacity:.7}
+main{max-width:900px;margin:auto;padding:16px}
+.card{
+  background:white;
+  border-radius:15px;
+  padding:16px;
+  margin-bottom:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+h2{font-size:20px}
+h3{margin-top:0}
+label{
+  display:block;
+  font-size:12px;
+  color:#697386;
+  margin-top:10px;
+}
+input{
+  width:100%;
+  padding:11px;
+  border:1px solid #ccd3dd;
+  border-radius:9px;
+  font-size:15px;
+  margin-top:5px;
+}
+button{
+  width:100%;
+  border:0;
+  border-radius:10px;
+  padding:13px;
+  margin-top:15px;
+  background:#172033;
+  color:white;
+  font-weight:bold;
+  font-size:15px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.metric{
+  background:#f7f8fa;
+  border-radius:12px;
+  padding:13px;
+}
+.metric small{
+  display:block;
+  color:#697386;
+  font-size:11px;
+}
+.metric strong{
+  display:block;
+  font-size:21px;
+  margin-top:5px;
+}
+.result{
+  font-size:24px;
+  font-weight:bold;
+}
+.good{
+  border-left:5px solid #29945c;
+}
+.warning{
+  border-left:5px solid #d99b18;
+}
+.danger{
+  border-left:5px solid #d33;
+}
+.action{
+  font-size:16px;
+  line-height:1.5;
+}
+.note{
+  font-size:12px;
+  color:#697386;
+  line-height:1.5;
+}
+hr{
+  border:0;
+  border-top:1px solid #eee;
+  margin:18px 0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>📊 E-COMMERCE KIT V4</h1>
+<p>Business Control Center — V2.1 Moteur économique</p>
+</header>
+
+<main>
+
+<div class="card">
+<h2>🧮 Économie du produit</h2>
+
+<p class="note">
+Entre les coûts d'approvisionnement, les frais variables et l'acquisition,
+l'objectif est de connaître la contribution réelle d'une commande.
+</p>
+
+<h3>1. Approvisionnement</h3>
+
+<label>Prix produit / usine (€)</label>
+<input id="product" type="number" step="0.01" value="14.72">
+
+<label>Personnalisation (€)</label>
+<input id="custom" type="number" step="0.01" value="1.50">
+
+<label>Packaging (€)</label>
+<input id="packaging" type="number" step="0.01" value="0.80">
+
+<label>Transport usine → entrepôt (€)</label>
+<input id="factoryTransport" type="number" step="0.01" value="0">
+
+<label>Export / frais Chine (€)</label>
+<input id="chinaFees" type="number" step="0.01" value="0">
+
+<label>Transport international (€)</label>
+<input id="internationalTransport" type="number" step="0.01" value="0">
+
+<label>Assurance (€)</label>
+<input id="insurance" type="number" step="0.01" value="0">
+
+<label>Dédouanement (€)</label>
+<input id="customsClearance" type="number" step="0.01" value="0">
+
+<label>Droits de douane (€)</label>
+<input id="customsDuty" type="number" step="0.01" value="0">
+
+<label>Autres frais d'approvisionnement (€)</label>
+<input id="otherSupply" type="number" step="0.01" value="0">
+
+<h3>2. Vente</h3>
+
+<label>Prix de vente (€)</label>
+<input id="sellingPrice" type="number" step="0.01" value="39.90">
+
+<label>Frais de paiement (€)</label>
+<input id="paymentFee" type="number" step="0.01" value="1.20">
+
+<label>Livraison variable par commande (€)</label>
+<input id="deliveryCost" type="number" step="0.01" value="3.50">
+
+<label>CAC (€)</label>
+<input id="cac" type="number" step="0.01" value="14.29">
+
+<button onclick="calculate()">
+CALCULER L'ÉCONOMIE DU PRODUIT
+</button>
+
+</div>
+
+
+<div class="card">
+<h2>📊 Résultats</h2>
+
+<div class="grid">
+
+<div class="metric">
+<small>Coût rendu unitaire</small>
+<strong id="landed">0 €</strong>
+</div>
+
+<div class="metric">
+<small>Contribution avant acquisition</small>
+<strong id="beforeAds">0 €</strong>
+</div>
+
+<div class="metric">
+<small>Contribution après CAC</small>
+<strong id="afterAds">0 €</strong>
+</div>
+
+<div class="metric">
+<small>Marge après CAC</small>
+<strong id="margin">0 %</strong>
+</div>
+
+<div class="metric">
+<small>ROAS de rentabilité</small>
+<strong id="breakEvenRoas">0</strong>
+</div>
+
+<div class="metric">
+<small>Prix minimum théorique</small>
+<strong id="minimumPrice">0 €</strong>
+</div>
+
+</div>
+</div>
+
+
+<div id="diagnostic" class="card">
+<h2>🔎 Diagnostic</h2>
+<div id="diagnosticText">
+Entre tes données puis lance le calcul.
+</div>
+</div>
+
+
+<div id="action" class="card">
+<h2>🎯 Action recommandée</h2>
+<div id="actionText" class="action">
+Aucune analyse pour le moment.
+</div>
+</div>
+
+
+<div class="card">
+<h2>📐 Formules utilisées</h2>
+
+<p class="note">
+<strong>Coût rendu</strong> =
+ensemble des coûts d'approvisionnement par unité.
+</p>
+
+<p class="note">
+<strong>Contribution avant acquisition</strong> =
+prix de vente − coût rendu − frais de paiement − livraison variable.
+</p>
+
+<p class="note">
+<strong>Contribution après CAC</strong> =
+contribution avant acquisition − CAC.
+</p>
+
+<p class="note">
+<strong>Marge après CAC</strong> =
+contribution après CAC ÷ prix de vente × 100.
+</p>
+
+<p class="note">
+<strong>ROAS de rentabilité</strong> =
+prix de vente ÷ contribution avant acquisition.
+</p>
+
+<p class="note">
+Le CAC utilisé ici est le CAC par commande/client acquis.
+Dans une version ultérieure, nous distinguerons CAC, CPA et autres métriques selon le modèle d'acquisition.
+</p>
+
+</div>
+
+</main>
+
+
+<script>
+
+const fields = [
+"product",
+"custom",
+"packaging",
+"factoryTransport",
+"chinaFees",
+"internationalTransport",
+"insurance",
+"customsClearance",
+"customsDuty",
+"otherSupply",
+"sellingPrice",
+"paymentFee",
+"deliveryCost",
+"cac"
+];
+
+function number(id){
+  return Number(document.getElementById(id).value) || 0;
+}
+
+function euro(value){
+  return value.toLocaleString("fr-FR",{
+    style:"currency",
+    currency:"EUR"
+  });
+}
+
+function calculate(){
+
+  const landed =
+    number("product") +
+    number("custom") +
+    number("packaging") +
+    number("factoryTransport") +
+    number("chinaFees") +
+    number("internationalTransport") +
+    number("insurance") +
+    number("customsClearance") +
+    number("customsDuty") +
+    number("otherSupply");
+
+  const price = number("sellingPrice");
+  const payment = number("paymentFee");
+  const delivery = number("deliveryCost");
+  const cac = number
