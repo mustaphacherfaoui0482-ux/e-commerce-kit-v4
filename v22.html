@@ -4,75 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#101827">
-<title>E-COMMERCE KIT V4 — V2.2</title>
+<title>E-COMMERCE KIT V4</title>
 
 <style>
 *{box-sizing:border-box}
-
 body{
 margin:0;
 font-family:Arial,sans-serif;
 background:#f3f5f8;
-color:#172033;
+color:#172033
 }
-
 header{
 background:#101827;
 color:white;
-padding:20px;
+padding:20px
 }
-
-header h1{
-margin:0;
-font-size:21px;
-}
-
-header p{
-margin:6px 0 0;
-font-size:12px;
-opacity:.7;
-}
-
-main{
-max-width:850px;
-margin:auto;
-padding:16px;
-}
-
+header h1{margin:0;font-size:21px}
+header p{margin:6px 0 0;font-size:12px;opacity:.7}
+main{max-width:850px;margin:auto;padding:16px}
 .card{
 background:white;
 padding:16px;
 border-radius:15px;
 margin-bottom:12px;
-box-shadow:0 2px 8px rgba(0,0,0,.05);
+box-shadow:0 2px 8px rgba(0,0,0,.05)
 }
-
-h2{
-font-size:20px;
-margin-top:0;
-}
-
-h3{
-font-size:16px;
-margin-top:22px;
-}
-
+h2{font-size:20px;margin-top:0}
+h3{font-size:16px;margin-top:22px}
 label{
 display:block;
 margin-top:10px;
 font-size:12px;
-color:#697386;
+color:#697386
 }
-
 input{
 width:100%;
 padding:11px;
 margin-top:5px;
 border:1px solid #ccd3dd;
 border-radius:9px;
-font-size:16px;
+font-size:16px
 }
-
 button{
 width:100%;
 margin-top:18px;
@@ -82,55 +54,40 @@ border-radius:10px;
 background:#172033;
 color:white;
 font-size:16px;
-font-weight:bold;
+font-weight:bold
 }
-
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:10px;
+gap:10px
 }
-
 .metric{
 background:#f5f7fa;
 border-radius:10px;
-padding:12px;
+padding:12px
 }
-
 .metric small{
 display:block;
 color:#697386;
-font-size:11px;
+font-size:11px
 }
-
 .metric strong{
 display:block;
 margin-top:5px;
-font-size:20px;
+font-size:20px
 }
-
 .note{
 font-size:12px;
 line-height:1.5;
-color:#697386;
+color:#697386
 }
-
-.good{
-border-left:5px solid #29945c;
-}
-
-.warning{
-border-left:5px solid #d99b18;
-}
-
-.danger{
-border-left:5px solid #d33;
-}
-
+.good{border-left:5px solid #29945c}
+.warning{border-left:5px solid #d99b18}
+.danger{border-left:5px solid #d33}
 .separator{
 border:0;
 border-top:1px solid #eee;
-margin:20px 0;
+margin:20px 0
 }
 </style>
 </head>
@@ -139,78 +96,68 @@ margin:20px 0;
 
 <header>
 <h1>📊 E-COMMERCE KIT V4</h1>
-<p>V2.2 — Business Control Center</p>
+<p>Business Control Center — V2.2</p>
 </header>
 
 <main>
 
 <div class="card">
 
-<h2>📦 1. Approvisionnement</h2>
-
-<p class="note">
-Le moteur répartit les frais de lot sur la quantité importée afin de calculer le véritable coût rendu unitaire.
-</p>
+<h2>📦 Économie du produit</h2>
 
 <label>Quantité du lot</label>
 <input id="quantity" type="number" value="100">
 
 <label>Prix produit / unité (€)</label>
-<input id="product" type="number" step="0.01" value="14.72">
+<input id="product" type="number" value="14.72">
 
 <label>Personnalisation / unité (€)</label>
-<input id="custom" type="number" step="0.01" value="1.50">
+<input id="custom" type="number" value="1.50">
 
 <label>Packaging / unité (€)</label>
-<input id="packaging" type="number" step="0.01" value="0.80">
-
+<input id="packaging" type="number" value="0.80">
 
 <h3>🚢 Frais du lot</h3>
 
 <label>Usine → entrepôt Chine (€)</label>
-<input id="chinaTransport" type="number" step="0.01" value="0">
+<input id="chinaTransport" type="number" value="0">
 
-<label>Frais export Chine (€)</label>
-<input id="exportFees" type="number" step="0.01" value="0">
+<label>Export Chine (€)</label>
+<input id="exportFees" type="number" value="0">
 
 <label>Transport international (€)</label>
-<input id="internationalTransport" type="number" step="0.01" value="0">
+<input id="internationalTransport" type="number" value="0">
 
 <label>Assurance (€)</label>
-<input id="insurance" type="number" step="0.01" value="0">
+<input id="insurance" type="number" value="0">
 
 <label>Dédouanement (€)</label>
-<input id="customsClearance" type="number" step="0.01" value="0">
+<input id="customsClearance" type="number" value="0">
 
 <label>Droits de douane (€)</label>
-<input id="customsDuty" type="number" step="0.01" value="0">
+<input id="customsDuty" type="number" value="0">
 
-<label>Entrepôt France (€)</label>
-<input id="franceTransport" type="number" step="0.01" value="0">
+<label>Transport vers France (€)</label>
+<input id="franceTransport" type="number" value="0">
 
 <label>Contrôle qualité (€)</label>
-<input id="qualityControl" type="number" step="0.01" value="0">
+<input id="qualityControl" type="number" value="0">
 
-<label>Autres frais d'importation (€)</label>
-<input id="otherImport" type="number" step="0.01" value="0">
-
-<hr class="separator">
+<label>Autres frais (€)</label>
+<input id="otherImport" type="number" value="0">
 
 <h3>💰 Vente</h3>
 
 <label>Prix de vente (€)</label>
-<input id="price" type="number" step="0.01" value="39.90">
+<input id="price" type="number" value="39.90">
 
-<label>Frais de paiement / commande (€)</label>
-<input id="payment" type="number" step="0.01" value="1.20">
+<label>Frais paiement / commande (€)</label>
+<input id="payment" type="number" value="1.20">
 
-<label>Livraison variable / commande (€)</label>
-<input id="delivery" type="number" step="0.01" value="3.50">
+<label>Livraison / commande (€)</label>
+<input id="delivery" type="number" value="3.50">
 
-<label>CAC / client acquis (€)</label>
-<input id="cac" type="number" step="0.01" value="14.29">
-
-<button type="button" id="calculateButton">
+<button type="button" id="productButton">
 CALCULER L'ÉCONOMIE DU PRODUIT
 </button>
 
@@ -219,7 +166,7 @@ CALCULER L'ÉCONOMIE DU PRODUIT
 
 <div class="card">
 
-<h2>📊 Résultats</h2>
+<h2>📊 Résultats produit</h2>
 
 <div class="grid">
 
@@ -229,38 +176,104 @@ CALCULER L'ÉCONOMIE DU PRODUIT
 </div>
 
 <div class="metric">
-<small>Coût rendu unitaire</small>
-<strong id="landedResult">0 €</strong>
+<small>Coût rendu / unité</small>
+<strong id="landed">0 €</strong>
 </div>
 
 <div class="metric">
-<small>Contribution avant CAC</small>
-<strong id="beforeCAC">0 €</strong>
+<small>Contribution / commande</small>
+<strong id="contribution">0 €</strong>
 </div>
 
 <div class="metric">
-<small>Contribution après CAC</small>
-<strong id="afterCAC">0 €</strong>
+<small>Prix minimum avec CAC</small>
+<strong id="minimum">0 €</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📊 PILOTER L'ACTIVITÉ</h2>
+
+<p class="note">
+Entre les résultats réels de ta période. Le moteur calcule ensuite les indicateurs de pilotage.
+</p>
+
+<label>Nombre de commandes</label>
+<input id="orders" type="number" value="35">
+
+<label>Chiffre d'affaires (€)</label>
+<input id="revenue" type="number" value="1396.50">
+
+<label>Dépenses publicitaires (€)</label>
+<input id="adSpend" type="number" value="500">
+
+<label>Stock initial (unités)</label>
+<input id="initialStock" type="number" value="100">
+
+<label>Trésorerie de départ (€)</label>
+<input id="startingCash" type="number" value="3000">
+
+<button type="button" id="dashboardButton">
+ANALYSER LE BUSINESS
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>📈 Dashboard</h2>
+
+<div class="grid">
+
+<div class="metric">
+<small>CA</small>
+<strong id="caResult">0 €</strong>
 </div>
 
 <div class="metric">
-<small>Marge après CAC</small>
-<strong id="marginResult">0 %</strong>
+<small>Commandes</small>
+<strong id="ordersResult">0</strong>
 </div>
 
 <div class="metric">
-<small>ROAS de rentabilité</small>
+<small>Panier moyen</small>
+<strong id="aovResult">0 €</strong>
+</div>
+
+<div class="metric">
+<small>CAC réel</small>
+<strong id="cacResult">0 €</strong>
+</div>
+
+<div class="metric">
+<small>ROAS réel</small>
 <strong id="roasResult">0</strong>
 </div>
 
 <div class="metric">
-<small>Prix minimum</small>
-<strong id="minimumResult">0 €</strong>
+<small>Contribution totale</small>
+<strong id="totalContribution">0 €</strong>
 </div>
 
 <div class="metric">
-<small>Contribution / unité</small>
-<strong id="contributionResult">0 €</strong>
+<small>Résultat après publicité</small>
+<strong id="afterAds">0 €</strong>
+</div>
+
+<div class="metric">
+<small>Stock restant</small>
+<strong id="stockResult">0</strong>
+</div>
+
+<div class="metric">
+<small>Trésorerie simplifiée</small>
+<strong id="cashResult">0 €</strong>
 </div>
 
 </div>
@@ -273,7 +286,7 @@ CALCULER L'ÉCONOMIE DU PRODUIT
 <h2>🔎 Diagnostic</h2>
 
 <div id="diagnosticText">
-Appuie sur CALCULER.
+Lance l'analyse.
 </div>
 
 </div>
@@ -281,68 +294,11 @@ Appuie sur CALCULER.
 
 <div class="card">
 
-<h2>🎯 Action recommandée</h2>
+<h2>🎯 ACTION PRIORITAIRE</h2>
 
 <div id="actionText">
 Aucune analyse pour le moment.
 </div>
-
-</div>
-
-
-<div class="card">
-
-<h2>📐 Logique du moteur</h2>
-
-<p class="note">
-<strong>Coût produit du lot</strong> =
-quantité × prix produit unitaire.
-</p>
-
-<p class="note">
-<strong>Personnalisation du lot</strong> =
-quantité × personnalisation unitaire.
-</p>
-
-<p class="note">
-<strong>Packaging du lot</strong> =
-quantité × packaging unitaire.
-</p>
-
-<p class="note">
-<strong>Coût rendu du lot</strong> =
-produits + personnalisation + packaging + tous les frais d'importation.
-</p>
-
-<p class="note">
-<strong>Coût rendu unitaire</strong> =
-coût rendu du lot ÷ quantité.
-</p>
-
-<p class="note">
-<strong>Contribution avant CAC</strong> =
-prix de vente − coût rendu − paiement − livraison.
-</p>
-
-<p class="note">
-<strong>Contribution après CAC</strong> =
-contribution avant CAC − CAC.
-</p>
-
-<p class="note">
-<strong>Marge après CAC</strong> =
-contribution après CAC ÷ prix de vente × 100.
-</p>
-
-<p class="note">
-<strong>ROAS de rentabilité</strong> =
-prix de vente ÷ contribution avant CAC.
-</p>
-
-<p class="note">
-La TVA import récupérable n'est pas automatiquement incluse dans le coût économique.
-Elle devra être traitée séparément selon le régime fiscal de l'entreprise.
-</p>
 
 </div>
 
@@ -351,203 +307,191 @@ Elle devra être traitée séparément selon le régime fiscal de l'entreprise.
 
 <script>
 
-function getNumber(id){
-
-var element=document.getElementById(id);
-
-return Number(element.value)||0;
-
+function n(id){
+return Number(document.getElementById(id).value)||0;
 }
 
-
-function euro(value){
-
-return value.toLocaleString("fr-FR",{
+function euro(x){
+return x.toLocaleString("fr-FR",{
 style:"currency",
 currency:"EUR"
 });
-
 }
 
 
-function calculateEconomics(){
+var landedCost=0;
+var contributionPerOrder=0;
 
-var quantity=getNumber("quantity");
 
-if(quantity<=0){
+function calculateProduct(){
 
-alert("La quantité du lot doit être supérieure à 0.");
+var q=n("quantity");
 
+if(q<=0){
+alert("La quantité doit être supérieure à 0.");
 return;
-
 }
 
-
-var product=getNumber("product");
-var custom=getNumber("custom");
-var packaging=getNumber("packaging");
-
-var chinaTransport=getNumber("chinaTransport");
-var exportFees=getNumber("exportFees");
-var internationalTransport=getNumber("internationalTransport");
-var insurance=getNumber("insurance");
-var customsClearance=getNumber("customsClearance");
-var customsDuty=getNumber("customsDuty");
-var franceTransport=getNumber("franceTransport");
-var qualityControl=getNumber("qualityControl");
-var otherImport=getNumber("otherImport");
-
-
-var price=getNumber("price");
-var payment=getNumber("payment");
-var delivery=getNumber("delivery");
-var cac=getNumber("cac");
-
-
-var productLot=product*quantity;
-
-var customLot=custom*quantity;
-
-var packagingLot=packaging*quantity;
-
+var product=n("product");
+var custom=n("custom");
+var packaging=n("packaging");
 
 var importFees=
+n("chinaTransport")+
+n("exportFees")+
+n("internationalTransport")+
+n("insurance")+
+n("customsClearance")+
+n("customsDuty")+
+n("franceTransport")+
+n("qualityControl")+
+n("otherImport");
 
-chinaTransport+
-exportFees+
-internationalTransport+
-insurance+
-customsClearance+
-customsDuty+
-franceTransport+
-qualityControl+
-otherImport;
-
-
-var totalLotCost=
-
-productLot+
-customLot+
-packagingLot+
+var total=
+(q*product)+
+(q*custom)+
+(q*packaging)+
 importFees;
 
+landedCost=total/q;
 
-var landed=
+var price=n("price");
+var payment=n("payment");
+var delivery=n("delivery");
 
-totalLotCost/quantity;
-
-
-var beforeCAC=
-
+contributionPerOrder=
 price-
-landed-
+landedCost-
 payment-
 delivery;
 
+document.getElementById("lotCost").textContent=euro(total);
 
-var afterCAC=
+document.getElementById("landed").textContent=euro(landedCost);
 
-beforeCAC-
-cac;
+document.getElementById("contribution").textContent=
+euro(contributionPerOrder);
+
+document.getElementById("minimum").textContent=
+euro(landedCost+payment+delivery);
+
+}
 
 
-var margin=
+function calculateDashboard(){
 
-price>0
-?
-(afterCAC/price)*100
-:
-0;
+calculateProduct();
 
+var orders=n("orders");
+var revenue=n("revenue");
+var adSpend=n("adSpend");
+var initialStock=n("initialStock");
+var startingCash=n("startingCash");
+
+if(orders<=0){
+alert("Le nombre de commandes doit être supérieur à 0.");
+return;
+}
+
+var aov=revenue/orders;
+
+var cac=adSpend/orders;
 
 var roas=
-
-beforeCAC>0
+adSpend>0
 ?
-price/beforeCAC
+revenue/adSpend
 :
 0;
 
+var totalContribution=
+contributionPerOrder*orders;
 
-var minimumPrice=
+var resultAfterAds=
+totalContribution-adSpend;
 
-landed+
-payment+
-delivery+
-cac;
+var stock=
+initialStock-orders;
 
+var cash=
+startingCash+
+revenue-
+(totalContribution*0)-
+adSpend;
 
-document.getElementById("lotCost").textContent=
-euro(totalLotCost);
+document.getElementById("caResult").textContent=
+euro(revenue);
 
+document.getElementById("ordersResult").textContent=
+orders;
 
-document.getElementById("landedResult").textContent=
-euro(landed);
+document.getElementById("aovResult").textContent=
+euro(aov);
 
-
-document.getElementById("beforeCAC").textContent=
-euro(beforeCAC);
-
-
-document.getElementById("afterCAC").textContent=
-euro(afterCAC);
-
-
-document.getElementById("marginResult").textContent=
-margin.toFixed(1)+" %";
-
+document.getElementById("cacResult").textContent=
+euro(cac);
 
 document.getElementById("roasResult").textContent=
 roas.toFixed(2);
 
+document.getElementById("totalContribution").textContent=
+euro(totalContribution);
 
-document.getElementById("minimumResult").textContent=
-euro(minimumPrice);
+document.getElementById("afterAds").textContent=
+euro(resultAfterAds);
+
+document.getElementById("stockResult").textContent=
+stock;
+
+document.getElementById("cashResult").textContent=
+euro(cash);
 
 
-document.getElementById("contributionResult").textContent=
-euro(afterCAC);
+var diagnostic=document.getElementById("diagnostic");
 
+var text=document.getElementById("diagnosticText");
 
-var diagnostic=
-document.getElementById("diagnostic");
-
-var diagnosticText=
-document.getElementById("diagnosticText");
-
-var actionText=
-document.getElementById("actionText");
-
+var action=document.getElementById("actionText");
 
 diagnostic.className="card";
 
 
-if(afterCAC<0){
+if(stock<0){
 
 diagnostic.className="card danger";
 
-diagnosticText.innerHTML=
-"🔴 <strong>Contribution négative.</strong><br><br>"+
-"La commande détruit "+
-euro(Math.abs(afterCAC))+
-" après acquisition.";
+text.innerHTML=
+"🔴 <strong>Stock négatif.</strong><br><br>"+
+"Les commandes dépassent le stock disponible.";
 
-actionText.innerHTML=
-"Priorité : réduire le CAC ou augmenter la contribution par commande. "+
-"Travaille sur le coût rendu, le prix, le taux de conversion, le panier moyen ou les créatifs.";
+action.innerHTML=
+"Priorité : sécuriser le réapprovisionnement avant de poursuivre l'acquisition.";
 
 }
 
-else if(afterCAC<price*0.10){
+else if(roas<2){
+
+diagnostic.className="card danger";
+
+text.innerHTML=
+"🔴 <strong>ROAS faible.</strong><br><br>"+
+"Le chiffre d'affaires généré par la publicité est faible par rapport aux dépenses.";
+
+action.innerHTML=
+"Analyser les campagnes, les créatifs, le ciblage et la conversion avant d'augmenter le budget.";
+
+}
+
+else if(cac>contributionPerOrder){
 
 diagnostic.className="card warning";
 
-diagnosticText.innerHTML=
-"🟠 <strong>Contribution faible.</strong><br><br>"+
-"La commande reste positive, mais la marge de sécurité est limitée.";
+text.innerHTML=
+"🟠 <strong>CAC supérieur à la contribution disponible.</strong><br><br>"+
+"Chaque commande risque de devenir déficitaire après acquisition.";
 
-actionText.innerHTML=
-"Surveille le CAC et améliore la contribution avant d'augmenter fortement le budget publicitaire.";
+action.innerHTML=
+"Réduire le CAC ou augmenter la contribution par commande.";
 
 }
 
@@ -555,40 +499,29 @@ else{
 
 diagnostic.className="card good";
 
-diagnosticText.innerHTML=
-"🟢 <strong>Économie unitaire positive.</strong><br><br>"+
-"La commande génère "+
-euro(afterCAC)+
-" après CAC.";
+text.innerHTML=
+"🟢 <strong>Acquisition actuellement positive.</strong><br><br>"+
+"Le CAC reste inférieur à la contribution disponible.";
 
-actionText.innerHTML=
-"L'économie unitaire est favorable. "+
-"Vérifie ensuite le volume, le stock, la trésorerie et la stabilité de l'acquisition.";
+action.innerHTML=
+"Surveiller simultanément CAC, ROAS, stock et trésorerie avant de scaler.";
 
 }
-
-
-localStorage.setItem(
-"ecommerce_v4_v22",
-JSON.stringify({
-quantity:quantity,
-totalLotCost:totalLotCost,
-landed:landed,
-price:price,
-beforeCAC:beforeCAC,
-afterCAC:afterCAC,
-margin:margin,
-roas:roas,
-minimumPrice:minimumPrice
-})
-);
 
 }
 
 
 document
-.getElementById("calculateButton")
-.addEventListener("click",calculateEconomics);
+.getElementById("productButton")
+.addEventListener("click",calculateProduct);
+
+
+document
+.getElementById("dashboardButton")
+.addEventListener("click",calculateDashboard);
+
+
+calculateProduct();
 
 </script>
 
