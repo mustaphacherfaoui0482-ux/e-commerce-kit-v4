@@ -646,7 +646,122 @@ calculateDashboard
 /* Calcul initial */
 
 calculateProduct();
+function calculateBusinessScore(){
 
+var orders=n("orders");
+var revenue=n("revenue");
+var adSpend=n("adSpend");
+var initialStock=n("initialStock");
+var startingCash=n("startingCash");
+
+if(orders<=0){
+document.getElementById("businessScore").textContent="0 / 100";
+return;
+}
+
+var cac=adSpend/orders;
+
+var roas=
+adSpend>0
+?
+revenue/adSpend
+:
+0;
+
+var stock=initialStock-orders;
+
+var totalContribution=
+contributionPerOrder*orders;
+
+var resultAfterAds=
+totalContribution-adSpend;
+
+var margin=
+revenue>0
+?
+(resultAfterAds/revenue)*100
+:
+0;
+
+var cash=
+startingCash+resultAfterAds;
+
+var maxCAC=n("maxCAC")||15;
+var minROAS=n("minROAS")||2.5;
+var minStock=n("minStock")||20;
+var minMargin=n("minMargin")||10;
+
+var score=0;
+
+
+/* CAC — 25 points */
+
+if(cac<=maxCAC){
+score+=25;
+}else if(cac<=maxCAC*1.25){
+score+=18;
+}else if(cac<=maxCAC*1.5){
+score+=10;
+}
+
+
+/* ROAS — 20 points */
+
+if(roas>=minROAS){
+score+=20;
+}else if(roas>=minROAS*0.8){
+score+=14;
+}else if(roas>=minROAS*0.6){
+score+=8;
+}
+
+
+/* MARGE — 25 points */
+
+if(margin>=minMargin){
+score+=25;
+}else if(margin>=minMargin*0.75){
+score+=18;
+}else if(margin>=minMargin*0.5){
+score+=10;
+}
+
+
+/* STOCK — 15 points */
+
+if(stock>=minStock){
+score+=15;
+}else if(stock>=minStock*0.5){
+score+=10;
+}else if(stock>0){
+score+=5;
+}
+
+
+/* TRÉSORERIE — 15 points */
+
+if(cash>=startingCash){
+score+=15;
+}else if(cash>=startingCash*0.5){
+score+=10;
+}else if(cash>0){
+score+=5;
+}
+
+
+document.getElementById("businessScore").textContent=
+score+" / 100";
+
+}
+
+
+/* Mise à jour du score après analyse */
+
+document
+.getElementById("dashboardButton")
+.addEventListener(
+"click",
+calculateBusinessScore);
 </script>
 
 </body>
