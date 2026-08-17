@@ -20,4 +20,4 @@ jobs:
           node-version: '24'
 
       - name: Run profitability engine tests
-        run: node --experimental-default-type=module v4/engines/profitability-engine.test.js
+        run: node -e "import('./v4/engines/profitability-engine.test.js')"
