@@ -8,20 +8,37 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
 margin:0;
 font-family:Arial,sans-serif;
 background:#f3f5f8;
 color:#172033
 }
+
 header{
 background:#101827;
 color:white;
 padding:20px
 }
-header h1{margin:0;font-size:21px}
-header p{margin:6px 0 0;font-size:12px;opacity:.7}
-main{max-width:850px;margin:auto;padding:16px}
+
+header h1{
+margin:0;
+font-size:21px
+}
+
+header p{
+margin:6px 0 0;
+font-size:12px;
+opacity:.7
+}
+
+main{
+max-width:850px;
+margin:auto;
+padding:16px
+}
+
 .card{
 background:white;
 padding:16px;
@@ -29,14 +46,24 @@ border-radius:15px;
 margin-bottom:12px;
 box-shadow:0 2px 8px rgba(0,0,0,.05)
 }
-h2{font-size:20px;margin-top:0}
-h3{font-size:16px;margin-top:22px}
+
+h2{
+font-size:20px;
+margin-top:0
+}
+
+h3{
+font-size:16px;
+margin-top:22px
+}
+
 label{
 display:block;
 margin-top:10px;
 font-size:12px;
 color:#697386
 }
+
 input{
 width:100%;
 padding:11px;
@@ -45,6 +72,7 @@ border:1px solid #ccd3dd;
 border-radius:9px;
 font-size:16px
 }
+
 button{
 width:100%;
 margin-top:18px;
@@ -56,34 +84,49 @@ color:white;
 font-size:16px;
 font-weight:bold
 }
+
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:10px
 }
+
 .metric{
 background:#f5f7fa;
 border-radius:10px;
 padding:12px
 }
+
 .metric small{
 display:block;
 color:#697386;
 font-size:11px
 }
+
 .metric strong{
 display:block;
 margin-top:5px;
 font-size:20px
 }
+
 .note{
 font-size:12px;
 line-height:1.5;
 color:#697386
 }
-.good{border-left:5px solid #29945c}
-.warning{border-left:5px solid #d99b18}
-.danger{border-left:5px solid #d33}
+
+.good{
+border-left:5px solid #29945c
+}
+
+.warning{
+border-left:5px solid #d99b18
+}
+
+.danger{
+border-left:5px solid #d33
+}
+
 .separator{
 border:0;
 border-top:1px solid #eee;
@@ -186,7 +229,7 @@ CALCULER L'ÉCONOMIE DU PRODUIT
 </div>
 
 <div class="metric">
-<small>Prix minimum avec CAC</small>
+<small>Prix minimum hors CAC</small>
 <strong id="minimum">0 €</strong>
 </div>
 
@@ -226,8 +269,6 @@ ANALYSER LE BUSINESS
 
 
 <div class="card">
-<div class="card">
-<div class="card">
 
 <h2>🚨 Seuils d'alerte</h2>
 
@@ -244,6 +285,10 @@ ANALYSER LE BUSINESS
 <input id="minMargin" type="number" step="0.1" value="10">
 
 </div>
+
+
+<div class="card">
+
 <h2>📈 Dashboard</h2>
 
 <div class="grid">
@@ -328,6 +373,7 @@ function n(id){
 return Number(document.getElementById(id).value)||0;
 }
 
+
 function euro(x){
 return x.toLocaleString("fr-FR",{
 style:"currency",
@@ -346,7 +392,7 @@ var q=n("quantity");
 
 if(q<=0){
 alert("La quantité doit être supérieure à 0.");
-return;
+return false;
 }
 
 var product=n("product");
@@ -382,9 +428,11 @@ landedCost-
 payment-
 delivery;
 
-document.getElementById("lotCost").textContent=euro(total);
+document.getElementById("lotCost").textContent=
+euro(total);
 
-document.getElementById("landed").textContent=euro(landedCost);
+document.getElementById("landed").textContent=
+euro(landedCost);
 
 document.getElementById("contribution").textContent=
 euro(contributionPerOrder);
@@ -392,293 +440,85 @@ euro(contributionPerOrder);
 document.getElementById("minimum").textContent=
 euro(landedCost+payment+delivery);
 
+return true;
 }
 
-function checkAlerts(cac, roas, stock, margin){
 
-var maxCAC = Number(document.getElementById("maxCAC").value) || 0;
-var minROAS = Number(document.getElementById("minROAS").value) || 0;
-var minStock = Number(document.getElementById("minStock").value) || 0;
-var minMargin = Number(document.getElementById("minMargin").value) || 0;
+function checkAlerts(cac,roas,stock,margin){
 
-var alerts = [];
-var actions = [];
+var maxCAC=n("maxCAC");
+var minROAS=n("minROAS");
+var minStock=n("minStock");
+var minMargin=n("minMargin");
 
-if(cac > maxCAC){
-    alerts.push("🔴 CAC trop élevé");
-    actions.push("Réduire le CAC avant d'augmenter le budget publicitaire.");
+var alerts=[];
+var actions=[];
+
+if(cac>maxCAC){
+alerts.push("🔴 CAC trop élevé");
+actions.push(
+"Réduire le CAC avant d'augmenter le budget publicitaire."
+);
 }
 
-if(roas < minROAS){
-    alerts.push("🔴 ROAS sous le seuil");
-    actions.push("Analyser les campagnes, les créatifs et le taux de conversion.");
+if(roas<minROAS){
+alerts.push("🔴 ROAS sous le seuil");
+actions.push(
+"Analyser les campagnes, les créatifs et le taux de conversion."
+);
 }
 
-if(stock < minStock){
-    alerts.push("🟠 Stock faible");
-    actions.push("Préparer le réapprovisionnement avant la rupture.");
+if(stock<minStock){
+alerts.push("🟠 Stock faible");
+actions.push(
+"Préparer le réapprovisionnement avant la rupture."
+);
 }
 
-if(margin < minMargin){
-    alerts.push("🟠 Marge insuffisante");
-    actions.push("Améliorer le prix, le coût rendu ou la contribution par commande.");
+if(margin<minMargin){
+alerts.push("🟠 Marge insuffisante");
+actions.push(
+"Améliorer le prix, le coût rendu ou la contribution par commande."
+);
 }
 
-var diagnostic = document.getElementById("diagnostic");
-var text = document.getElementById("diagnosticText");
-var action = document.getElementById("actionText");
+var diagnostic=
+document.getElementById("diagnostic");
 
-if(alerts.length === 0){
+var text=
+document.getElementById("diagnosticText");
 
-    diagnostic.className = "card good";
+var action=
+document.getElementById("actionText");
 
-    text.innerHTML =
-    "🟢 <strong>Aucune alerte critique.</strong><br><br>" +
-    "Les indicateurs respectent les seuils définis.";
 
-    action.innerHTML =
-    "Continuer à surveiller CAC, ROAS, marge et stock.";
+if(alerts.length===0){
+
+diagnostic.className="card good";
+
+text.innerHTML=
+"🟢 <strong>Aucune alerte critique.</strong><br><br>"+
+"Les indicateurs respectent les seuils définis.";
+
+action.innerHTML=
+"Continuer à surveiller CAC, ROAS, marge et stock.";
 
 }else{
 
-    diagnostic.className = "card danger";
+diagnostic.className="card danger";
 
-    text.innerHTML =
-    alerts.join("<br>");
+text.innerHTML=
+alerts.join("<br>");
 
-    action.innerHTML =
-    actions.join("<br>");
-}
+action.innerHTML=
+actions.join("<br>");
 
-}
-function checkAlerts(cac, roas, stock, margin){
-
-var maxCAC = Number(document.getElementById("maxCAC").value) || 0;
-var minROAS = Number(document.getElementById("minROAS").value) || 0;
-var minStock = Number(document.getElementById("minStock").value) || 0;
-var minMargin = Number(document.getElementById("minMargin").value) || 0;
-
-var alerts = [];
-var actions = [];
-
-if(cac > maxCAC){
-    alerts.push("🔴 CAC trop élevé");
-    actions.push("Réduire le CAC avant d'augmenter le budget publicitaire.");
-}
-
-if(roas < minROAS){
-    alerts.push("🔴 ROAS sous le seuil");
-    actions.push("Analyser les campagnes, les créatifs et le taux de conversion.");
-}
-
-if(stock < minStock){
-    alerts.push("🟠 Stock faible");
-    actions.push("Préparer le réapprovisionnement avant la rupture.");
-}
-
-if(margin < minMargin){
-    alerts.push("🟠 Marge insuffisante");
-    actions.push("Améliorer le prix, le coût rendu ou la contribution par commande.");
-}
-
-var diagnostic = document.getElementById("diagnostic");
-var text = document.getElementById("diagnosticText");
-var action = document.getElementById("actionText");
-
-if(alerts.length === 0){
-
-    diagnostic.className = "card good";
-
-    text.innerHTML =
-    "🟢 <strong>Aucune alerte critique.</strong><br><br>" +
-    "Les indicateurs respectent les seuils définis.";
-
-    action.innerHTML =
-    "Continuer à surveiller CAC, ROAS, marge et stock.";
-
-}else{
-
-    diagnostic.className = "card danger";
-
-    text.innerHTML =
-    alerts.join("<br>");
-
-    action.innerHTML =
-    actions.join("<br>");
-}
-
-}
-function checkAlerts(cac, roas, stock, margin){
-
-var maxCAC = Number(document.getElementById("maxCAC").value) || 0;
-var minROAS = Number(document.getElementById("minROAS").value) || 0;
-var minStock = Number(document.getElementById("minStock").value) || 0;
-var minMargin = Number(document.getElementById("minMargin").value) || 0;
-
-var alerts = [];
-var actions = [];
-
-if(cac > maxCAC){
-    alerts.push("🔴 CAC trop élevé");
-    actions.push("Réduire le CAC avant d'augmenter le budget publicitaire.");
-}
-
-if(roas < minROAS){
-    alerts.push("🔴 ROAS sous le seuil");
-    actions.push("Analyser les campagnes, les créatifs et le taux de conversion.");
-}
-
-if(stock < minStock){
-    alerts.push("🟠 Stock faible");
-    actions.push("Préparer le réapprovisionnement avant la rupture.");
-}
-
-if(margin < minMargin){
-    alerts.push("🟠 Marge insuffisante");
-    actions.push("Améliorer le prix, le coût rendu ou la contribution par commande.");
-}
-
-var diagnostic = document.getElementById("diagnostic");
-var text = document.getElementById("diagnosticText");
-var action = document.getElementById("actionText");
-
-if(alerts.length === 0){
-
-    diagnostic.className = "card good";
-
-    text.innerHTML =
-    "🟢 <strong>Aucune alerte critique.</strong><br><br>" +
-    "Les indicateurs respectent les seuils définis.";
-
-    action.innerHTML =
-    "Continuer à surveiller CAC, ROAS, marge et stock.";
-
-}else{
-
-    diagnostic.className = "card danger";
-
-    text.innerHTML =
-    alerts.join("<br>");
-
-    action.innerHTML =
-    actions.join("<br>");
-}
-
-}
-function checkAlerts(cac, roas, stock, margin){
-
-var maxCAC = Number(document.getElementById("maxCAC").value) || 0;
-var minROAS = Number(document.getElementById("minROAS").value) || 0;
-var minStock = Number(document.getElementById("minStock").value) || 0;
-var minMargin = Number(document.getElementById("minMargin").value) || 0;
-
-var alerts = [];
-var actions = [];
-
-if(cac > maxCAC){
-    alerts.push("🔴 CAC trop élevé");
-    actions.push("Réduire le CAC avant d'augmenter le budget publicitaire.");
-}
-
-if(roas < minROAS){
-    alerts.push("🔴 ROAS sous le seuil");
-    actions.push("Analyser les campagnes, les créatifs et le taux de conversion.");
-}
-
-if(stock < minStock){
-    alerts.push("🟠 Stock faible");
-    actions.push("Préparer le réapprovisionnement avant la rupture.");
-}
-
-if(margin < minMargin){
-    alerts.push("🟠 Marge insuffisante");
-    actions.push("Améliorer le prix, le coût rendu ou la contribution par commande.");
-}
-
-var diagnostic = document.getElementById("diagnostic");
-var text = document.getElementById("diagnosticText");
-var action = document.getElementById("actionText");
-
-if(alerts.length === 0){
-
-    diagnostic.className = "card good";
-
-    text.innerHTML =
-    "🟢 <strong>Aucune alerte critique.</strong><br><br>" +
-    "Les indicateurs respectent les seuils définis.";
-
-    action.innerHTML =
-    "Continuer à surveiller CAC, ROAS, marge et stock.";
-
-}else{
-
-    diagnostic.className = "card danger";
-
-    text.innerHTML = alerts.join("<br>");
-
-    action.innerHTML = actions.join("<br>");
-}
-
-}
-function checkAlerts(cac, roas, stock, margin){
-
-var maxCAC = Number(document.getElementById("maxCAC").value) || 0;
-var minROAS = Number(document.getElementById("minROAS").value) || 0;
-var minStock = Number(document.getElementById("minStock").value) || 0;
-var minMargin = Number(document.getElementById("minMargin").value) || 0;
-
-var alerts = [];
-var actions = [];
-
-if(cac > maxCAC){
-    alerts.push("🔴 CAC trop élevé");
-    actions.push("Réduire le CAC avant d'augmenter le budget publicitaire.");
-}
-
-if(roas < minROAS){
-    alerts.push("🔴 ROAS sous le seuil");
-    actions.push("Analyser les campagnes, les créatifs et le taux de conversion.");
-}
-
-if(stock < minStock){
-    alerts.push("🟠 Stock faible");
-    actions.push("Préparer le réapprovisionnement avant la rupture.");
-}
-
-if(margin < minMargin){
-    alerts.push("🟠 Marge insuffisante");
-    actions.push("Améliorer le prix, le coût rendu ou la contribution par commande.");
-}
-
-var diagnostic = document.getElementById("diagnostic");
-var text = document.getElementById("diagnosticText");
-var action = document.getElementById("actionText");
-
-if(alerts.length === 0){
-
-    diagnostic.className = "card good";
-
-    text.innerHTML =
-    "🟢 <strong>Aucune alerte critique.</strong><br><br>" +
-    "Les indicateurs respectent les seuils définis.";
-
-    action.innerHTML =
-    "Continuer à surveiller CAC, ROAS, marge et stock.";
-
-}else{
-
-    diagnostic.className = "card danger";
-
-    text.innerHTML = alerts.join("<br>");
-
-    action.innerHTML = actions.join("<br>");
 }
 
 }
 
-function checkAlerts().
 
-calculateProduct();
+function calculateDashboard(){
 
 var orders=n("orders");
 var revenue=n("revenue");
@@ -686,14 +526,29 @@ var adSpend=n("adSpend");
 var initialStock=n("initialStock");
 var startingCash=n("startingCash");
 
+
 if(orders<=0){
 alert("Le nombre de commandes doit être supérieur à 0.");
 return;
 }
 
-var aov=revenue/orders;
+if(revenue<0||adSpend<0){
+alert("Le chiffre d'affaires et les dépenses publicitaires ne peuvent pas être négatifs.");
+return;
+}
 
-var cac=adSpend/orders;
+
+/* Recalcule l'économie du produit */
+if(!calculateProduct()){
+return;
+}
+
+
+var aov=
+revenue/orders;
+
+var cac=
+adSpend/orders;
 
 var roas=
 adSpend>0
@@ -702,28 +557,30 @@ revenue/adSpend
 :
 0;
 
+
 var totalContribution=
 contributionPerOrder*orders;
 
 var resultAfterAds=
 totalContribution-adSpend;
-  var margin =
+
+var margin=
 revenue>0
 ?
 (resultAfterAds/revenue)*100
 :
 0;
 
-checkAlerts(cac,roas,stock,margin);
 
 var stock=
 initialStock-orders;
 
+
 var cash=
-startingCash+
-revenue-
-(totalContribution*0)-
-adSpend;
+startingCash+resultAfterAds;
+
+
+/* Dashboard */
 
 document.getElementById("caResult").textContent=
 euro(revenue);
@@ -753,207 +610,40 @@ document.getElementById("cashResult").textContent=
 euro(cash);
 
 
-var diagnostic=document.getElementById("diagnostic");
+/* Diagnostic et alertes */
 
-var text=document.getElementById("diagnosticText");
-
-var action=document.getElementById("actionText");
-
-diagnostic.className="card";
-
-
-if(stock<0){
-
-diagnostic.className="card danger";
-
-text.innerHTML=
-"🔴 <strong>Stock négatif.</strong><br><br>"+
-"Les commandes dépassent le stock disponible.";
-
-action.innerHTML=
-"Priorité : sécuriser le réapprovisionnement avant de poursuivre l'acquisition.";
+checkAlerts(
+cac,
+roas,
+stock,
+margin
+);
 
 }
 
-else if(roas<2){
 
-diagnostic.className="card danger";
+/* Boutons */
 
-text.innerHTML=
-"🔴 <strong>ROAS faible.</strong><br><br>"+
-"Le chiffre d'affaires généré par la publicité est faible par rapport aux dépenses.";
-
-action.innerHTML=
-"Analyser les campagnes, les créatifs, le ciblage et la conversion avant d'augmenter le budget.";
-
-}
-
-else if(cac>contributionPerOrder){
-
-diagnostic.className="card warning";
-
-text.innerHTML=
-"🟠 <strong>CAC supérieur à la contribution disponible.</strong><br><br>"+
-"Chaque commande risque de devenir déficitaire après acquisition.";
-
-action.innerHTML=
-"Réduire le CAC ou augmenter la contribution par commande.";
-
-}
-
-else{
-
-diagnostic.className="card good";
-
-text.innerHTML=
-"🟢 <strong>Acquisition actuellement positive.</strong><br><br>"+
-"Le CAC reste inférieur à la contribution disponible.";
-
-action.innerHTML=
-"Surveiller simultanément CAC, ROAS, stock et trésorerie avant de scaler.";
-
-}
-
-}
-
-function calculateDashboard() {
-
-  const orders = Number(document.getElementById("orders").value) || 0;
-  const revenue = Number(document.getElementById("revenue").value) || 0;
-  const adSpend = Number(document.getElementById("adSpend").value) || 0;
-  const initialStock = Number(document.getElementById("initialStock").value) || 0;
-  const startingCash = Number(document.getElementById("startingCash").value) || 0;
-
-  const maxCAC = Number(document.getElementById("maxCAC").value) || 15;
-  const minROAS = Number(document.getElementById("minROAS").value) || 2.5;
-  const minStock = Number(document.getElementById("minStock").value) || 20;
-  const minMargin = Number(document.getElementById("minMargin").value) || 10;
-
-  const aov = orders > 0 ? revenue / orders : 0;
-  const cac = orders > 0 ? adSpend / orders : 0;
-  const roas = adSpend > 0 ? revenue / adSpend : 0;
-
-  const totalContribution = revenue - adSpend;
-  const afterAds = totalContribution;
-  const stockResult = initialStock - orders;
-  const cashResult = startingCash + afterAds;
-  const margin = revenue > 0 ? (afterAds / revenue) * 100 : 0;
-
-  document.getElementById("caResult").textContent = revenue.toFixed(2) + " €";
-  document.getElementById("ordersResult").textContent = orders;
-  document.getElementById("aovResult").textContent = aov.toFixed(2) + " €";
-  document.getElementById("cacResult").textContent = cac.toFixed(2) + " €";
-  document.getElementById("roasResult").textContent = roas.toFixed(2);
-  document.getElementById("totalContribution").textContent = totalContribution.toFixed(2) + " €";
-  document.getElementById("afterAds").textContent = afterAds.toFixed(2) + " €";
-  document.getElementById("stockResult").textContent = stockResult;
-  document.getElementById("cashResult").textContent = cashResult.toFixed(2) + " €";
-
-  const diagnostic = document.getElementById("diagnostic");
-
-  let messages = [];
-
-  if (cac > maxCAC) messages.push("⚠️ CAC trop élevé");
-  if (roas < minROAS) messages.push("⚠️ ROAS insuffisant");
-  if (stockResult < minStock) messages.push("⚠️ Stock faible");
-  if (margin < minMargin) messages.push("⚠️ Marge insuffisante");
-
-  if (messages.length === 0) {
-    messages.push("✅ Business sous contrôle");
-  }
-
-  diagnostic.innerHTML =
-    "<h2>🔎 Diagnostic</h2><p>" +
-    messages.join("<br>") +
-    "</p>";
-}
 document
 .getElementById("productButton")
-.addEventListener("click",calculateProduct);
+.addEventListener(
+"click",
+calculateProduct
+);
 
 
 document
 .getElementById("dashboardButton")
-.addEventListener("click",calculateDashboard);
+.addEventListener(
+"click",
+calculateDashboard
+);
 
+
+/* Calcul initial */
 
 calculateProduct();
-function calculateDashboard(){
 
-  var orders = Number(document.getElementById("orders").value) || 0;
-  var revenue = Number(document.getElementById("revenue").value) || 0;
-  var adSpend = Number(document.getElementById("adSpend").value) || 0;
-  var initialStock = Number(document.getElementById("initialStock").value) || 0;
-  var startingCash = Number(document.getElementById("startingCash").value) || 0;
-
-  if(orders <= 0){
-    alert("Le nombre de commandes doit être supérieur à 0.");
-    return;
-  }
-
-  var aov = revenue / orders;
-  var cac = adSpend / orders;
-  var roas = adSpend > 0 ? revenue / adSpend : 0;
-
-  var stock = initialStock - orders;
-
-  var contribution = contributionPerOrder * orders;
-  var resultAfterAds = contribution - adSpend;
-  var margin = revenue > 0 ? (resultAfterAds / revenue) * 100 : 0;
-  var cash = startingCash + resultAfterAds;
-
-  document.getElementById("caResult").textContent = euro(revenue);
-  document.getElementById("ordersResult").textContent = orders;
-  document.getElementById("aovResult").textContent = euro(aov);
-  document.getElementById("cacResult").textContent = euro(cac);
-  document.getElementById("roasResult").textContent = roas.toFixed(2);
-  document.getElementById("totalContribution").textContent = euro(contribution);
-  document.getElementById("afterAds").textContent = euro(resultAfterAds);
-  document.getElementById("stockResult").textContent = stock;
-  document.getElementById("cashResult").textContent = euro(cash);
-
-  var diagnostic = document.getElementById("diagnostic");
-  var text = document.getElementById("diagnosticText");
-  var action = document.getElementById("actionText");
-
-  var messages = [];
-  var actions = [];
-
-  var maxCAC = Number(document.getElementById("maxCAC").value) || 15;
-  var minROAS = Number(document.getElementById("minROAS").value) || 2.5;
-  var minStock = Number(document.getElementById("minStock").value) || 20;
-  var minMargin = Number(document.getElementById("minMargin").value) || 10;
-
-  if(cac > maxCAC){
-    messages.push("🔴 CAC trop élevé");
-    actions.push("Réduire le CAC avant d'augmenter le budget publicitaire.");
-  }
-
-  if(roas < minROAS){
-    messages.push("🔴 ROAS sous le seuil");
-    actions.push("Analyser les campagnes, les créatifs et le taux de conversion.");
-  }
-
-  if(stock < minStock){
-    messages.push("🟠 Stock faible");
-    actions.push("Préparer le réapprovisionnement.");
-  }
-
-  if(margin < minMargin){
-    messages.push("🟠 Marge insuffisante");
-    actions.push("Améliorer le prix, le coût rendu ou la contribution.");
-  }
-
-  if(messages.length === 0){
-    diagnostic.className = "card good";
-    text.innerHTML = "🟢 <strong>Business sous contrôle.</strong><br><br>Les indicateurs respectent les seuils.";
-    action.innerHTML = "Continuer à surveiller CAC, ROAS, marge et stock.";
-  }else{
-    diagnostic.className = "card danger";
-    text.innerHTML = messages.join("<br>");
-    action.innerHTML = actions.join("<br>");
-  }
-}
 </script>
 
 </body>
