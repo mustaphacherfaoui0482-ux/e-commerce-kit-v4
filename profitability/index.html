@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V4 — Calculateur de rentabilité</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #17202a;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #667085;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d0d5dd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      border: 0;
+      border-radius: 10px;
+      background: #111827;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .result {
+      padding: 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+
+    .result small {
+      display: block;
+      color: #667085;
+      margin-bottom: 6px;
+    }
+
+    .result strong {
+      font-size: 22px;
+    }
+
+    #status {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-align: center;
+      background: #f2f4f7;
+    }
+
+    .profitable {
+      background: #dcfce7 !important;
+      color: #166534;
+    }
+
+    .not-profitable {
+      background: #fee2e2 !important;
+      color: #991b1b;
+    }
+
+    @media (max-width: 650px) {
+      .grid,
+      .results {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <h1>Calculateur de rentabilité</h1>
+
+    <p class="subtitle">
+      V4 — Vérifiez rapidement si votre produit est réellement rentable.
+    </p>
+
+    <section class="card">
+
+      <h2>Paramètres du produit</h2>
+
+      <div class="grid">
+
+        <div>
+          <label for="sellingPrice">Prix de vente (€)</label>
+          <input
+            id="sellingPrice"
+            type="number"
+            step="0.01"
+            value="40"
+          >
+        </div>
+
+        <div>
+          <label for="landedCost">Coût rendu (€)</label>
+          <input
+            id="landedCost"
+            type="number"
+            step="0.01"
+            value="10"
+          >
+        </div>
+
+        <div>
+          <label for="variableFees">Frais variables (€)</label>
+          <input
+            id="variableFees"
+            type="number"
+            step="0.01"
+            value="3"
+          >
+        </div>
+
+        <div>
+          <label for="cac">CAC (€)</label>
+          <input
+            id="cac"
+            type="number"
+            step="0.01"
+            value="8"
+          >
+        </div>
+
+        <div>
+          <label for="targetContribution">
+            Contribution cible (€)
+          </label>
+          <input
+            id="targetContribution"
+            type="number"
+            step="0.01"
+            value="5"
+          >
+        </div>
+
+      </div>
+
+      <button id="calculate">
+        Calculer la rentabilité
+      </button>
+
+    </section>
+
+    <section class="card">
+
+      <h2>Résultats</h2>
+
+      <div class="results">
+
+        <div class="result">
+          <small>Contribution avant publicité</small>
+          <strong id="beforeAds">—</strong>
+        </div>
+
+        <div class="result">
+          <small>Contribution après CAC</small>
+          <strong id="contribution">—</strong>
+        </div>
+
+        <div class="result">
+          <small>Marge de contribution</small>
+          <strong id="margin">—</strong>
+        </div>
+
+        <div class="result">
+          <small>CAC maximum</small>
+          <strong id="maxCac">—</strong>
+        </div>
+
+        <div class="result">
+          <small>Prix minimum</small>
+          <strong id="minimumPrice">—</strong>
+        </div>
+
+      </div>
+
+      <div id="status">
+        En attente du calcul
+      </div>
+
+    </section>
+
+  </main>
+
+  <script type="module">
+
+    import {
+      calculateProfitability
+    } from "../engines/profitability-engine.js";
+
+    const $ = (id) => document.getElementById(id);
+
+    function euro(value) {
+      return new Intl.NumberFormat("fr-FR", {
+        style: "currency",
+        currency: "EUR"
+      }).format(value);
+    }
+
+    function calculate() {
+
+      const result = calculateProfitability({
+
+        sellingPrice: Number(
+          $("sellingPrice").value
+        ),
+
+        landedCost: Number(
+          $("landedCost").value
+        ),
+
+        variableFees: Number(
+          $("variableFees").value
+        ),
+
+        cac: Number(
+          $("cac").value
+        ),
+
+        targetContribution: Number(
+          $("targetContribution").value
+        )
+
+      });
+
+      $("beforeAds").textContent =
+        euro(result.contributionBeforeAds);
+
+      $("contribution").textContent =
+        euro(result.contribution);
+
+      $("margin").textContent =
+        `${(result.contributionMargin * 100).toFixed(1)} %`;
+
+      $("maxCac").textContent =
+        euro(result.maxCac);
+
+      $("minimumPrice").textContent =
+        euro(result.minimumSellingPrice);
+
+      const status = $("status");
+
+      if (result.profitable) {
+
+        status.textContent =
+          "✓ PRODUIT RENTABLE";
+
+        status.className =
+          "profitable";
+
+      } else {
+
+        status.textContent =
+          "✕ PRODUIT NON RENTABLE";
+
+        status.className =
+          "not-profitable";
+      }
+    }
+
+    $("calculate").addEventListener(
+      "click",
+      calculate
+    );
+
+    calculate();
+
+  </script>
+
+</body>
+</html>
