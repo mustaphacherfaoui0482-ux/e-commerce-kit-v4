@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#101827">
+<title>E-COMMERCE KIT V4</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f3f5f8;
+color:#172033;
+}
+
+header{
+background:#101827;
+color:white;
+padding:20px;
+position:sticky;
+top:0;
+z-index:10;
+}
+
+header h1{
+margin:0;
+font-size:21px;
+}
+
+header p{
+margin:5px 0 0;
+font-size:12px;
+opacity:.7;
+}
+
+nav{
+display:flex;
+overflow-x:auto;
+gap:7px;
+padding:10px;
+background:white;
+position:sticky;
+top:75px;
+z-index:9;
+border-bottom:1px solid #ddd;
+}
+
+nav button{
+border:0;
+padding:10px 13px;
+border-radius:10px;
+background:#eef1f5;
+font-weight:bold;
+white-space:nowrap;
+}
+
+nav button.active{
+background:#172033;
+color:white;
+}
+
+main{
+max-width:900px;
+margin:auto;
+padding:16px;
+}
+
+.page{
+display:none;
+}
+
+.page.active{
+display:block;
+}
+
+h2{
+font-size:19px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+}
+
+.card{
+background:white;
+border-radius:15px;
+padding:16px;
+margin-bottom:10px;
+box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.label{
+font-size:12px;
+color:#697386;
+}
+
+.value{
+font-size:24px;
+font-weight:bold;
+margin-top:6px;
+}
+
+input,select{
+width:100%;
+padding:11px;
+margin:6px 0 12px;
+border:1px solid #ccd3dd;
+border-radius:9px;
+font-size:15px;
+}
+
+.btn{
+background:#172033;
+color:white;
+border:0;
+padding:11px 15px;
+border-radius:9px;
+font-weight:bold;
+}
+
+.result{
+font-size:20px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.alert{
+border-left:5px solid #d33;
+}
+
+.good{
+border-left:5px solid #29945c;
+}
+
+.task{
+padding:12px 0;
+border-bottom:1px solid #eee;
+}
+
+.small{
+font-size:12px;
+color:#687386;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>📊 E-COMMERCE KIT V4</h1>
+<p>Business Control Center • Version 1</p>
+</header>
+
+<nav>
+
+<button class="active" onclick="showPage('dashboard',this)">
+🏠 Dashboard
+</button>
+
+<button onclick="showPage('calculer',this)">
+🧮 Calculer
+</button>
+
+<button onclick="showPage('kpi',this)">
+📊 KPI
+</button>
+
+<button onclick="showPage('stock',this)">
+📦 Stock
+</button>
+
+<button onclick="showPage('cash',this)">
+💰 Trésorerie
+</button>
+
+<button onclick="showPage('creative',this)">
+🎬 Creatives
+</button>
+
+<button onclick="showPage('alertes',this)">
+🚨 Alertes
+</button>
+
+<button onclick="showPage('actions',this)">
+🎯 Actions
+</button>
+
+<button onclick="showPage('plan',this)">
+📅 30 jours
+</button>
+
+<button onclick="showPage('learn',this)">
+📕 Apprendre
+</button>
+
+</nav>
+
+<main>
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+<h2>Vue d'ensemble</h2>
+
+<div class="grid">
+
+<div class="card">
+<div class="label">CA</div>
+<div class="value" id="ca">0 €</div>
+</div>
+
+<div class="card">
+<div class="label">Commandes</div>
+<div class="value" id="ordersDisplay">0</div>
+</div>
+
+<div class="card">
+<div class="label">CAC</div>
+<div class="value" id="cacDisplay">0 €</div>
+</div>
+
+<div class="card">
+<div class="label">ROAS</div>
+<div class="value" id="roasDisplay">0</div>
+</div>
+
+</div>
+
+<h2>🚨 Situation</h2>
+
+<div id="dashboardAlerts"></div>
+
+<h2>🎯 Action prioritaire</h2>
+
+<div class="card" id="priorityAction">
+Aucune action enregistrée.
+</div>
+
+</section>
+
+
+<!-- CALCULATEURS -->
+
+<section id="calculer" class="page">
+
+<h2>🧮 Calculateurs</h2>
+
+<div class="card">
+
+<h3>Coût rendu</h3>
+
+<label>Prix produit</label>
+<input id="productCost" type="number" value="14.72">
+
+<label>Personnalisation</label>
+<input id="customCost" type="number" value="1.50">
+
+<label>Packaging</label>
+<input id="packCost" type="number" value="0.80">
+
+<label>Logistique</label>
+<input id="logCost" type="number" value="2.70">
+
+<button class="btn" onclick="calculateLanded()">
+Calculer
+</button>
+
+<div class="result" id="landedResult">
+19,72 €
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>Marge</h3>
+
+<label>Prix de vente</label>
+<input id="salePrice" type="number" value="39.90">
+
+<label>Coût rendu</label>
+<input id="landedCost" type="number" value="19.72">
+
+<label>Publicité</label>
+<input id="advertisingCost" type="number" value="0">
+
+<button class="btn" onclick="calculateMargin()">
+Calculer
+</button>
+
+<div class="result" id="marginResult">
+20,18 €
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>CAC / ROAS</h3>
+
+<label>Dépenses publicitaires</label>
+<input id="ads" type="number" value="500">
+
+<label>Commandes</label>
+<input id="orders" type="number" value="35">
+
+<label>CA</label>
+<input id="revenue" type="number" value="1396.50">
+
+<button class="btn" onclick="calculateKPI()">
+Calculer
+</button>
+
+<div class="result" id="kpiResult">
+CAC : 14,29 €<br>
+ROAS : 2,79
+</div>
+
+</div>
+
+</section>
+
+
+<!-- KPI -->
+
+<section id="kpi" class="page">
+
+<h2>📊 KPI</h2>
+
+<div class="grid">
+
+<div class="card">
+<div class="label">Panier moyen</div>
+<div class="value" id="aov">0 €</div>
+</div>
+
+<div class="card">
+<div class="label">Marge</div>
+<div class="value" id="kpiMargin">0 €</div>
+</div>
+
+<div class="card">
+<div class="label">Stock</div>
+<div class="value" id="stockTotal">0</div>
+</div>
+
+<div class="card">
+<div class="label">Trésorerie</div>
+<div class="value" id="cashTotal">0 €</div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- STOCK -->
+
+<section id="stock" class="page">
+
+<h2>📦 Stock</h2>
+
+<div class="card">
+
+<label>Produit</label>
+<input id="stockProduct" placeholder="Ex : Hoodie DZ">
+
+<label>SKU</label>
+<input id="stockSku">
+
+<label>Quantité</label>
+<input id="stockQty" type="number">
+
+<label>Seuil minimum</label>
+<input id="stockMin" type="number">
+
+<button class="btn" onclick="addStock()">
+Ajouter
+</button>
+
+</div>
+
+<div id="stockList"></div>
+
+</section>
+
+
+<!-- CASH -->
+
+<section id="cash" class="page">
+
+<h2>💰 Trésorerie</h2>
+
+<div class="card">
+
+<label>Type</label>
+
+<select id="cashType">
+
+<option value="in">
+Entrée
+</option>
+
+<option value="out">
+Sortie
+</option>
+
+</select>
+
+<label>Montant</label>
+<input id="cashAmount" type="number">
+
+<label>Description</label>
+<input id="cashDescription">
+
+<button class="btn" onclick="addCash()">
+Enregistrer
+</button>
+
+</div>
+
+<div class="card">
+
+<div class="label">
+Solde
+</div>
+
+<div class="value" id="cashBalance">
+0 €
+</div>
+
+</div>
+
+<div id="cashList"></div>
+
+</section>
+
+
+<!-- CREATIVE TESTING -->
+
+<section id="creative" class="page">
+
+<h2>🎬 Creative Testing</h2>
+
+<div class="card">
+
+<label>Nom du créatif</label>
+<input id="creativeName">
+
+<label>Dépenses</label>
+<input id="creativeSpend" type="number">
+
+<label>Impressions</label>
+<input id="creativeImpressions" type="number">
+
+<label>CTR (%)</label>
+<input id="creativeCTR" type="number">
+
+<label>Conversions</label>
+<input id="creativeConversions" type="number">
+
+<label>CA</label>
+<input id="creativeRevenue" type="number">
+
+<button class="btn" onclick="addCreative()">
+Ajouter le test
+</button>
+
+</div>
+
+<div id="creativeList"></div>
+
+</section>
+
+
+<!-- ALERTES -->
+
+<section id="alertes" class="page">
+
+<h2>🚨 Alertes</h2>
+
+<div id="alerts"></div>
+
+</section>
+
+
+<!-- ACTIONS -->
+
+<section id="actions" class="page">
+
+<h2>🎯 Actions</h2>
+
+<div class="card">
+
+<label>Action</label>
+
+<input id="actionText">
+
+<label>Priorité</label>
+
+<select id="actionPriority">
+
+<option>URGENT</option>
+<option>IMPORTANT</option>
+<option>À FAIRE</option>
+<option>OPTIMISATION</option>
+
+</select>
+
+<button class="btn" onclick="addAction()">
+Ajouter
+</button>
+
+</div>
+
+<div id="actionList"></div>
+
+</section>
+
+
+<!-- PLAN -->
+
+<section id="plan" class="page">
+
+<h2>📅 Plan d'action 30 jours</h2>
+
+<div class="card">
+
+<strong>
+Progression :
+<span id="progress">
+0 %
+</span>
+</strong>
+
+<div id="tasks"></div>
+
+</div>
+
+</section>
+
+
+<!-- APPRENDRE -->
+
+<section id="learn" class="page">
+
+<h2>📕 Apprendre</h2>
+
+<div class="card">
+
+<h3>E-COMMERCE KIT V4</h3>
+
+<p>
+La connaissance explique quoi faire et pourquoi.
+</p>
+
+<p>
+Chaque notion suivra :
+</p>
+
+<p>
+Définition → Importance → Fonctionnement → Méthode → Exemple → Erreurs → KPI → Outils → Checklist → Exercice → Vigilance
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<script>
+
+const STORAGE_KEY="ecommerce_kit_v4";
+
+let data=JSON.parse(
+localStorage.getItem(STORAGE_KEY)
+||
+'{"stock":[],"cash":[],"creatives":[],"actions":[],"tasks":[]}'
+);
+
+
+if(data.tasks.length===0){
+
+data.tasks=[];
+
+for(let i=1;i<=30;i++){
+
+data.tasks.push({
+day:i,
+done:false
+});
+
+}
+
+save();
+
+}
+
+
+function save(){
+
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(data)
+);
+
+refresh();
+
+}
+
+
+function euro(value){
+
+return Number(value||0).toLocaleString(
+"fr-FR",
+{
+style:"currency",
+currency:"EUR"
+}
+);
+
+}
+
+
+function showPage(page,button){
+
+document
+.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"));
+
+document
+.getElementById(page)
+.classList.add("active");
+
+document
+.querySelectorAll("nav button")
+.forEach(b=>b.classList.remove("active"));
+
+button.classList.add("active");
+
+}
+
+
+function calculateLanded(){
+
+let result=
+Number(productCost.value||0)+
+Number(customCost.value||0)+
+Number(packCost.value||0)+
+Number(logCost.value||0);
+
+landedResult.textContent=euro(result);
+
+landedCost.value=result.toFixed(2);
+
+}
+
+
+function calculateMargin(){
+
+let price=Number(salePrice.value||0);
+
+let cost=Number(landedCost.value||0);
+
+let adsCost=Number(advertisingCost.value||0);
+
+let margin=price-cost-adsCost;
+
+let percentage=
+price>0
+?
+margin/price*100
+:
+0;
+
+marginResult.innerHTML=
+euro(margin)
++
+" • "
++
+percentage.toFixed(1)
++
+" %";
+
+}
+
+
+function calculateKPI(){
+
+let ad=Number(ads.value||0);
+
+let ord=Number(orders.value||0);
+
+let rev=Number(revenue.value||0);
+
+let cac=
+ord>0
+?
+ad/ord
+:
+0;
+
+let roas=
+ad>0
+?
+rev/ad
+:
+0;
+
+kpiResult.innerHTML=
+"CAC : "
++
+euro(cac)
++
+"<br>ROAS : "
++
+roas.toFixed(2);
+
+refresh();
+
+}
+
+
+function addStock(){
+
+data.stock.push({
+
+product:stockProduct.value,
+
+sku:stockSku.value,
+
+qty:Number(stockQty.value||0),
+
+min:Number(stockMin.value||0)
+
+});
+
+stockProduct.value="";
+stockSku.value="";
+stockQty.value="";
+stockMin.value="";
+
+save();
+
+}
+
+
+function addCash(){
+
+data.cash.push({
+
+type:cashType.value,
+
+amount:Number(cashAmount.value||0),
+
+description:cashDescription.value
+
+});
+
+cashAmount.value="";
+cashDescription.value="";
+
+save();
+
+}
+
+
+function addCreative(){
+
+let spend=
+Number(creativeSpend.value||0);
+
+let revenue=
+Number(creativeRevenue.value||0);
+
+let roas=
+spend>0
+?
+revenue/spend
+:
+0;
+
+data.creatives.push({
+
+name:creativeName.value,
+
+spend:spend,
+
+impressions:Number(creativeImpressions.value||0),
+
+ctr:Number(creativeCTR.value||0),
+
+conversions:Number(creativeConversions.value||0),
+
+revenue:revenue,
+
+roas:roas
+
+});
+
+save();
+
+}
+
+
+function addAction(){
+
+data.actions.push({
+
+text:actionText.value,
+
+priority:actionPriority.value,
+
+done:false
+
+});
+
+actionText.value="";
+
+save();
+
+}
+
+
+function refresh(){
+
+let ad=Number(ads.value||0);
+
+let ord=Number(orders.value||0);
+
+let rev=Number(revenue.value||0);
+
+let cac=ord>0?ad/ord:0;
+
+let roas=ad>0?rev/ad:0;
+
+ca.textContent=euro(rev);
+
+ordersDisplay.textContent=ord;
+
+cacDisplay.textContent=euro(cac);
+
+roasDisplay.textContent=roas.toFixed(2);
+
+aov.textContent=
+ord>0
+?
+euro(rev/ord)
+:
+"0 €";
+
+
+let stock=
+data.stock.reduce(
+(total,item)=>total+item.qty,
+0
+);
+
+stockTotal.textContent=stock;
+
+
+let cash=
+data.cash.reduce(
+(total,item)=>
+total+
+(
+item.type==="in"
+?
+item.amount
+:
+-item.amount
+),
+0
+);
+
+cashTotal.textContent=euro(cash);
+
+cashBalance.textContent=euro(cash);
+
+
+stockList.innerHTML="";
+
+data.stock.forEach(item=>{
+
+let div=document.createElement("div");
+
+div.className="card";
+
+div.innerHTML=
+"<strong>"
++
+item.product
++
+"</strong><br>"
++
+item.qty
++
+" unités<br>"
++
+(
+item.qty<=item.min
+?
+"🔴 Stock faible"
+:
+"🟢 Stock OK"
+);
+
+stockList.appendChild(div);
+
+});
+
+
+cashList.innerHTML="";
+
+data.cash.forEach(item=>{
+
+let div=document.createElement("div");
+
+div.className="card";
+
+div.innerHTML=
+(
+item.type==="in"
+?
+"➕ "
+:
+"➖ "
+)
++
+euro(item.amount)
++
+" — "
++
+item.description;
+
+cashList.appendChild(div);
+
+});
+
+
+creativeList.innerHTML="";
+
+data.creatives.forEach(item=>{
+
+let div=document.createElement("div");
+
+div.className="card";
+
+let status=
+item.roas>=3
+?
+"🟢 GAGNANT"
+:
+item.roas>=2
+?
+"🟡 À TESTER"
+:
+"🔴 À ARRÊTER";
+
+div.innerHTML=
+"<strong>"
++
+item.name
++
+"</strong><br>"
++
+"CTR : "
++
+item.ctr
++
+"%<br>"
++
+"Conversions : "
++
+item.conversions
++
+"<br>"
++
+"ROAS : "
++
+item.roas.toFixed(2)
++
+"<br>"
++
+status;
+
+creativeList.appendChild(div);
+
+});
+
+
+actionList.innerHTML="";
+
+data.actions.forEach((item,index)=>{
+
+let div=document.createElement("div");
+
+div.className="task";
+
+div.innerHTML=
+"<input type='checkbox' "
++
+(
+item.done
+?
+"checked"
+:
+""
+)
++
+" onchange='toggleAction("
++
+index
++
+")'> "
++
+"<strong>"
++
+item.priority
++
+"</strong><br>"
++
+item.text;
+
+actionList.appendChild(div);
+
+});
+
+
+tasks.innerHTML="";
+
+let completed=0;
+
+data.tasks.forEach((task,index)=>{
+
+if(task.done)
+completed++;
+
+let div=document.createElement("div");
+
+div.className="task";
+
+div.innerHTML=
+"<input type='checkbox' "
++
+(
+task.done
+?
+"checked"
+:
+""
+)
++
+" onchange='toggleTask("
++
+index
++
+")'> "
++
+"Jour "
++
+task.day
++
+" — action e-commerce";
+
+tasks.appendChild(div);
+
+});
+
+
+progress.textContent=
+Math.round(
+completed/30*100
+)
++
+" %";
+
+
+let alertsArray=[];
+
+if(cac>15){
+
+alertsArray.push(
+"🔴 CAC élevé : "
++
+euro(cac)
+);
+
+}
+
+if(roas<2 && ad>0){
+
+alertsArray.push(
+"🔴 ROAS faible : "
++
+roas.toFixed(2)
+);
+
+}
+
+data.stock.forEach(item=>{
+
+if(item.qty<=item.min){
+
+alertsArray.push(
+"🔴 Stock faible : "
++
+item.product
+);
+
+}
+
+});
+
+
+alerts.innerHTML="";
+
+dashboardAlerts.innerHTML="";
+
+if(alertsArray.length===0){
+
+alerts.innerHTML=
+"<div class='card good'>🟢 Aucun problème critique détecté.</div>";
+
+dashboardAlerts.innerHTML=
+alerts.innerHTML;
+
+}else{
+
+alertsArray.forEach(text=>{
+
+let div=document.createElement("div");
+
+div.className="card alert";
+
+div.textContent=text;
+
+alerts.appendChild(div);
+
+});
+
+dashboardAlerts.innerHTML=
+alerts.innerHTML;
+
+}
+
+
+let priority=
+data.actions.find(
+item=>!item.done
+);
+
+priorityAction.textContent=
+priority
+?
+priority.text
+:
+alertsArray.length>0
+?
+"Analyser les alertes détectées."
+:
+"Aucune action prioritaire.";
+
+}
+
+
+function toggleAction(index){
+
+data.actions[index].done=
+!data.actions[index].done;
+
+save();
+
+}
+
+
+function toggleTask(index){
+
+data.tasks[index].done=
+!data.tasks[index].done;
+
+save();
+
+}
+
+
+refresh();
+
+calculateLanded();
+
+</script>
+
+</body>
+</html>
