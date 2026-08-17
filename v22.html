@@ -816,7 +816,57 @@ action.innerHTML=
 
 }
 
+function calculateDashboard() {
 
+  const orders = Number(document.getElementById("orders").value) || 0;
+  const revenue = Number(document.getElementById("revenue").value) || 0;
+  const adSpend = Number(document.getElementById("adSpend").value) || 0;
+  const initialStock = Number(document.getElementById("initialStock").value) || 0;
+  const startingCash = Number(document.getElementById("startingCash").value) || 0;
+
+  const maxCAC = Number(document.getElementById("maxCAC").value) || 15;
+  const minROAS = Number(document.getElementById("minROAS").value) || 2.5;
+  const minStock = Number(document.getElementById("minStock").value) || 20;
+  const minMargin = Number(document.getElementById("minMargin").value) || 10;
+
+  const aov = orders > 0 ? revenue / orders : 0;
+  const cac = orders > 0 ? adSpend / orders : 0;
+  const roas = adSpend > 0 ? revenue / adSpend : 0;
+
+  const totalContribution = revenue - adSpend;
+  const afterAds = totalContribution;
+  const stockResult = initialStock - orders;
+  const cashResult = startingCash + afterAds;
+  const margin = revenue > 0 ? (afterAds / revenue) * 100 : 0;
+
+  document.getElementById("caResult").textContent = revenue.toFixed(2) + " €";
+  document.getElementById("ordersResult").textContent = orders;
+  document.getElementById("aovResult").textContent = aov.toFixed(2) + " €";
+  document.getElementById("cacResult").textContent = cac.toFixed(2) + " €";
+  document.getElementById("roasResult").textContent = roas.toFixed(2);
+  document.getElementById("totalContribution").textContent = totalContribution.toFixed(2) + " €";
+  document.getElementById("afterAds").textContent = afterAds.toFixed(2) + " €";
+  document.getElementById("stockResult").textContent = stockResult;
+  document.getElementById("cashResult").textContent = cashResult.toFixed(2) + " €";
+
+  const diagnostic = document.getElementById("diagnostic");
+
+  let messages = [];
+
+  if (cac > maxCAC) messages.push("⚠️ CAC trop élevé");
+  if (roas < minROAS) messages.push("⚠️ ROAS insuffisant");
+  if (stockResult < minStock) messages.push("⚠️ Stock faible");
+  if (margin < minMargin) messages.push("⚠️ Marge insuffisante");
+
+  if (messages.length === 0) {
+    messages.push("✅ Business sous contrôle");
+  }
+
+  diagnostic.innerHTML =
+    "<h2>🔎 Diagnostic</h2><p>" +
+    messages.join("<br>") +
+    "</p>";
+}
 document
 .getElementById("productButton")
 .addEventListener("click",calculateProduct);
