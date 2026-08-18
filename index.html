@@ -848,7 +848,32 @@ function deleteStock(id){
   save();
 }
 
+function updateOrderProducts(){
 
+  const select = document.getElementById("orderProduct");
+
+  if(!select) return;
+
+  select.innerHTML = "";
+
+  data.stock.forEach(item => {
+
+    const option = document.createElement("option");
+
+    option.value = item.id;
+
+    option.textContent =
+      item.product +
+      (item.sku ? " • " + item.sku : "") +
+      " — " +
+      item.qty +
+      " disponibles";
+
+    select.appendChild(option);
+
+  });
+
+}
 function addCash(){
 
 data.cash.push({
