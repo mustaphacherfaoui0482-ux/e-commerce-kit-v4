@@ -1171,8 +1171,10 @@ alertsArray.length>0
 :
 "Aucune action prioritaire.";
 
+  if (typeof updateBusinessHealth === "function") {
+  updateBusinessHealth();}
+                          
 }
-
 
 function toggleAction(index){
 
