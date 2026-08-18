@@ -874,9 +874,36 @@ function updateOrderProducts(){
   });
 
 }
+    option.textContent =
+      item.product +
+      (item.sku ? " • " + item.sku : "") +
+      " — " +
+      item.qty +
+      " disponibles";
+
+    select.appendChild(option);
+
+  });
+
+}
 function addCash(){
 
 data.cash.push({
+
+type:cashType.value,
+
+amount:Number(cashAmount.value||0),
+
+description:cashDescription.value
+
+});
+
+cashAmount.value="";
+cashDescription.value="";
+
+save();
+
+
 
 type:cashType.value,
 
