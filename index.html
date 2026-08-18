@@ -404,8 +404,23 @@ Ajouter
 </button>
 
 </div>
+<div class="card">
 
+<h3>🛒 Nouvelle commande</h3>
+
+<label>Produit</label>
+<select id="orderProduct"></select>
+
+<label>Quantité commandée</label>
+<input id="orderQty" type="number" min="1" placeholder="Ex : 2">
+
+<button class="btn" onclick="addProductOrder()">
+Enregistrer la commande
+</button>
+
+</div>
 <div id="stockList"></div>
+  
 
 </section>
 
