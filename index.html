@@ -992,7 +992,11 @@ div.className="card";
 let status=
 item.qty===0
 ?
-"🔴 Rupture"
+"⚫ Rupture"
+:
+item.qty<=item.min/2
+?
+"🔴 Stock critique"
 :
 item.qty<=item.min
 ?
