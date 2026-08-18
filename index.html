@@ -746,29 +746,39 @@ refresh();
 
 }
 
-
 function addStock(){
+  const product = stockProduct.value.trim();
+  const sku = stockSku.value.trim();
+  const qty = Number(stockQty.value || 0);
+  const min = Number(stockMin.value || 0);
 
-data.stock.push({
+  if(!product){
+    alert("Veuillez renseigner le produit.");
+    return;
+  }
 
-product:stockProduct.value,
+  if(qty < 0 || min < 0){
+    alert("La quantité et le seuil doivent être positifs.");
+    return;
+  }
 
-sku:stockSku.value,
+  data.stock.push({
+    id: Date.now(),
+    product: product,
+    sku: sku,
+    qty: qty,
+    min: min
+  });
 
-qty:Number(stockQty.value||0),
+  stockProduct.value = "";
+  stockSku.value = "";
+  stockQty.value = "";
+  stockMin.value = "";
 
-min:Number(stockMin.value||0)
-
-});
-
-stockProduct.value="";
-stockSku.value="";
-stockQty.value="";
-stockMin.value="";
-
-save();
-
+  save();
 }
+
+
 
 
 function addCash(){
