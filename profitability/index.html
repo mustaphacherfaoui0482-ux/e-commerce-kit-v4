@@ -33,11 +33,11 @@
     }
 
     .card {
-      background: white;
+      background: #ffffff;
       border-radius: 16px;
       padding: 20px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
     .grid {
@@ -67,7 +67,7 @@
       border: 0;
       border-radius: 10px;
       background: #111827;
-      color: white;
+      color: #ffffff;
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
@@ -101,15 +101,16 @@
       border-radius: 10px;
       font-weight: 700;
       text-align: center;
+      background: #f2f4f7;
     }
 
     .profitable {
-      background: #dcfce7;
+      background: #dcfce7 !important;
       color: #166534;
     }
 
     .not-profitable {
-      background: #fee2e2;
+      background: #fee2e2 !important;
       color: #991b1b;
     }
 
@@ -131,6 +132,7 @@
   <main class="container">
 
     <h1>Calculateur de rentabilité</h1>
+
     <p class="subtitle">
       V4 — Vérifiez rapidement si votre produit est réellement rentable.
     </p>
@@ -143,29 +145,54 @@
 
         <div>
           <label for="sellingPrice">Prix de vente (€)</label>
-          <input id="sellingPrice" type="number" step="0.01" value="40">
+          <input
+            id="sellingPrice"
+            type="number"
+            step="0.01"
+            value="40"
+          >
         </div>
 
         <div>
           <label for="landedCost">Coût rendu (€)</label>
-          <input id="landedCost" type="number" step="0.01" value="10">
+          <input
+            id="landedCost"
+            type="number"
+            step="0.01"
+            value="10"
+          >
         </div>
 
         <div>
           <label for="variableFees">Frais variables (€)</label>
-          <input id="variableFees" type="number" step="0.01" value="3">
+          <input
+            id="variableFees"
+            type="number"
+            step="0.01"
+            value="3"
+          >
         </div>
 
         <div>
           <label for="cac">CAC (€)</label>
-          <input id="cac" type="number" step="0.01" value="8">
+          <input
+            id="cac"
+            type="number"
+            step="0.01"
+            value="8"
+          >
         </div>
 
         <div>
           <label for="targetContribution">
             Contribution cible (€)
           </label>
-          <input id="targetContribution" type="number" step="0.01" value="5">
+          <input
+            id="targetContribution"
+            type="number"
+            step="0.01"
+            value="5"
+          >
         </div>
 
       </div>
@@ -219,8 +246,9 @@
 
   <script type="module">
 
-    import { calculateProfitability }
-      from "./profitability-engine.js";
+    import {
+      calculateProfitability
+    } from "../engines/profitability-engine.js";
 
     const $ = (id) => document.getElementById(id);
 
@@ -234,11 +262,27 @@
     function calculate() {
 
       const result = calculateProfitability({
-        sellingPrice: Number($("sellingPrice").value),
-        landedCost: Number($("landedCost").value),
-        variableFees: Number($("variableFees").value),
-        cac: Number($("cac").value),
-        targetContribution: Number($("targetContribution").value)
+
+        sellingPrice: Number(
+          $("sellingPrice").value
+        ),
+
+        landedCost: Number(
+          $("landedCost").value
+        ),
+
+        variableFees: Number(
+          $("variableFees").value
+        ),
+
+        cac: Number(
+          $("cac").value
+        ),
+
+        targetContribution: Number(
+          $("targetContribution").value
+        )
+
       });
 
       $("beforeAds").textContent =
@@ -259,19 +303,31 @@
       const status = $("status");
 
       if (result.profitable) {
-        status.textContent = "✓ PRODUIT RENTABLE";
-        status.className = "profitable";
+
+        status.textContent =
+          "✓ PRODUIT RENTABLE";
+
+        status.className =
+          "profitable";
+
       } else {
-        status.textContent = "✕ PRODUIT NON RENTABLE";
-        status.className = "not-profitable";
+
+        status.textContent =
+          "✕ PRODUIT NON RENTABLE";
+
+        status.className =
+          "not-profitable";
       }
     }
 
-    $("calculate").addEventListener("click", calculate);
+    $("calculate").addEventListener(
+      "click",
+      calculate
+    );
 
     calculate();
 
   </script>
 
 </body>
-  </html>
+</html>
