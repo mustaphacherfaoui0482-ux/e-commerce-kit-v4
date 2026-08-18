@@ -966,7 +966,6 @@ cashTotal.textContent=euro(cash);
 
 cashBalance.textContent=euro(cash);
 
-
 stockList.innerHTML="";
 
 data.stock.forEach(item=>{
@@ -975,6 +974,17 @@ let div=document.createElement("div");
 
 div.className="card";
 
+let status=
+item.qty===0
+?
+"🔴 Rupture"
+:
+item.qty<=item.min
+?
+"🟠 Stock faible"
+:
+"🟢 Stock OK";
+
 div.innerHTML=
 "<strong>"
 +
@@ -982,17 +992,43 @@ item.product
 +
 "</strong><br>"
 +
+"SKU : "
++
+(item.sku||"—")
++
+"<br>"
++
 item.qty
 +
 " unités<br>"
 +
-(
-item.qty<=item.min
-?
-"🔴 Stock faible"
-:
-"🟢 Stock OK"
-);
+"Seuil : "
++
+item.min
++
+"<br>"
++
+status
++
+"<br><br>"
++
+"<button class='btn' onclick='stockEntry("
++
+item.id
++
+")'>➕ Entrée</button> "
++
+"<button class='btn' onclick='stockExit("
++
+item.id
++
+")'>➖ Sortie</button> "
++
+"<button class='btn' onclick='deleteStock("
++
+item.id
++
+")'>🗑️ Supprimer</button>";
 
 stockList.appendChild(div);
 
