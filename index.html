@@ -778,7 +778,60 @@ function addStock(){
   save();
 }
 
+function stockEntry(id){
+  const item = data.stock.find(x => x.id === id);
 
+  if(!item) return;
+
+  const qty = Number(prompt("Quantité à ajouter :") || 0);
+
+  if(qty <= 0){
+    alert("Veuillez saisir une quantité positive.");
+    return;
+  }
+
+  item.qty += qty;
+
+  save();
+}
+
+
+function stockExit(id){
+  const item = data.stock.find(x => x.id === id);
+
+  if(!item) return;
+
+  const qty = Number(prompt("Quantité à retirer :") || 0);
+
+  if(qty <= 0){
+    alert("Veuillez saisir une quantité positive.");
+    return;
+  }
+
+  if(qty > item.qty){
+    alert("Impossible : la quantité demandée dépasse le stock disponible.");
+    return;
+  }
+
+  item.qty -= qty;
+
+  save();
+}
+
+
+function deleteStock(id){
+  const index = data.stock.findIndex(x => x.id === id);
+
+  if(index === -1) return;
+
+  if(!confirm("Supprimer ce produit du stock ?")){
+    return;
+  }
+
+  data.stock.splice(index, 1);
+
+  save();
+}
 
 
 function addCash(){
