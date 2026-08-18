@@ -1,4 +1,4 @@
-const CACHE_NAME = "e-commerce-kit-v4-v1";
+const CACHE_NAME = "e-commerce-kit-v4-v2";
 
 const FILES_TO_CACHE = [
   "./",

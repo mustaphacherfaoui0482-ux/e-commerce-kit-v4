@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sourcing — Coût rendu France</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #17202a;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #667085;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: 0;
+      border-radius: 10px;
+      background: #111827;
+      color: white;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .results {
+      background: #ecfdf3;
+      border: 1px solid #a7f3d0;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #d1fae5;
+    }
+
+    .result-row:last-child {
+      border-bottom: 0;
+    }
+
+    .main-result {
+      font-size: 24px;
+      font-weight: 800;
+      color: #047857;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-weight: 700;
+      color: #047857;
+    }
+
+    @media (max-width: 650px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <h1>Sourcing / Coût rendu France</h1>
+
+    <p class="subtitle">
+      Calcule ton véritable coût d'achat jusqu'à l'entrepôt en France.
+    </p>
+
+    <section class="card">
+      <h2>Produit</h2>
+
+      <div class="grid">
+
+        <label>
+          Quantité
+          <input id="quantity" type="number" value="100" min="0">
+        </label>
+
+        <label>
+          Prix produit / unité (€)
+          <input id="productCost" type="number" value="5" min="0" step="0.01">
+        </label>
+
+        <label>
+          Personnalisation / unité (€)
+          <input id="customization" type="number" value="0.50" min="0" step="0.01">
+        </label>
+
+        <label>
+          Packaging / unité (€)
+          <input id="packaging" type="number" value="0.30" min="0" step="0.01">
+        </label>
+
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Logistique Chine</h2>
+
+      <div class="grid">
+
+        <label>
+          Usine → entrepôt Chine (€)
+          <input id="factoryToChinaWarehouse" type="number" value="50" min="0" step="0.01">
+        </label>
+
+        <label>
+          Frais export Chine (€)
+          <input id="chinaExportFees" type="number" value="20" min="0" step="0.01">
+        </label>
+
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Transport international</h2>
+
+      <div class="grid">
+
+        <label>
+          Transport international (€)
+          <input id="internationalShipping" type="number" value="300" min="0" step="0.01">
+        </label>
+
+        <label>
+          Assurance (€)
+          <input id="insurance" type="number" value="30" min="0" step="0.01">
+        </label>
+
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Douane</h2>
+
+      <div class="grid">
+
+        <label>
+          Dédouanement (€)
+          <input id="customsClearance" type="number" value="80" min="0" step="0.01">
+        </label>
+
+        <label>
+          Droits de douane (€)
+          <input id="customsDuty" type="number" value="100" min="0" step="0.01">
+        </label>
+
+        <label>
+          Frais portuaires (€)
+          <input id="portFees" type="number" value="40" min="0" step="0.01">
+        </label>
+
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>France</h2>
+
+      <div class="grid">
+
+        <label>
+          Transport vers entrepôt France (€)
+          <input id="franceWarehouseTransport" type="number" value="60" min="0" step="0.01">
+        </label>
+
+        <label>
+          Inspection / contrôle qualité (€)
+          <input id="inspection" type="number" value="50" min="0" step="0.01">
+        </label>
+
+        <label>
+          Autres frais logistiques (€)
+          <input id="otherLogistics" type="number" value="20" min="0" step="0.01">
+        </label>
+
+      </div>
+    </section>
+
+    <section class="card">
+      <button id="calculate">
+        Calculer le coût rendu France
+      </button>
+    </section>
+
+    <section class="card results">
+
+      <h2>Résultat</h2>
+
+      <div class="result-row">
+        <span>Coût total rendu France</span>
+        <strong id="totalCost">— €</strong>
+      </div>
+
+      <div class="result-row main-result">
+        <span>Coût rendu unitaire</span>
+        <strong id="landedCostPerUnit">— €</strong>
+      </div>
+
+      <div id="status" class="status">
+        En attente du calcul
+      </div>
+
+    </section>
+
+  </main>
+
+  <script type="module">
+
+    import { calculateLandedCost }
+      from "../engines/landed-cost-engine.js";
+
+    const fields = [
+      "quantity",
+      "productCost",
+      "customization",
+      "packaging",
+      "factoryToChinaWarehouse",
+      "chinaExportFees",
+      "internationalShipping",
+      "insurance",
+      "customsClearance",
+      "customsDuty",
+      "portFees",
+      "franceWarehouseTransport",
+      "inspection",
+      "otherLogistics"
+    ];
+
+    function getNumber(id) {
+      return Number(
+        document.getElementById(id).value
+      ) || 0;
+    }
+
+    document
+      .getElementById("calculate")
+      .addEventListener("click", () => {
+
+        const values = {};
+
+        fields.forEach((field) => {
+          values[field] = getNumber(field);
+        });
+
+        const result =
+          calculateLandedCost(values);
+
+        document
+          .getElementById("totalCost")
+          .textContent =
+          `${result.totalCost.toFixed(2)} €`;
+
+        document
+          .getElementById("landedCostPerUnit")
+          .textContent =
+          `${result.landedCostPerUnit.toFixed(2)} €`;
+
+        document
+          .getElementById("status")
+          .textContent =
+          "🟢 Calcul effectué";
+      });
+
+  </script>
+
+</body>
+  </html>
