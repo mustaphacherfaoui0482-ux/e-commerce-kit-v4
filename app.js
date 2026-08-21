@@ -35,6 +35,9 @@ function render() {
   $("stockTotal").textContent = state.stock.reduce((s, x) => s + Math.max(0, Number(x.qty) || 0), 0);
   const cash = state.cash.reduce((s, x) => s + (x.type === "in" ? 1 : -1) * Math.max(0, Number(x.amount) || 0), 0);
   $("cashTotal").textContent = money(cash);
+  const contribution = calculateProfitability({ sellingPrice: state.inputs.sellingPrice, landedCost: state.inputs.landedCost, variableFees: state.inputs.variableFees, cac: state.inputs.orders ? state.inputs.ads / state.inputs.orders : 0, targetContribution: state.inputs.targetContribution });
+  $("kpiContribution").textContent = money(contribution.contribution);
+  $("kpiMargin").textContent = `${(contribution.contributionMargin * 100).toFixed(1)} %`;
   $("healthStatus").textContent = h.score == null ? h.title : `${h.title} · ${h.score}/100`;
   $("healthMessage").textContent = h.message;
   $("healthDetails").textContent = h.score == null ? h.problem : `${h.problem} ${h.action}`;
@@ -82,73 +85,19 @@ function bind() {
     document.querySelectorAll("nav button").forEach(x => x.classList.remove("active"));
     b.classList.add("active");
   }));
-
   $("landedForm").addEventListener("submit", e => { e.preventDefault(); calculateLanded(); });
   $("profitForm").addEventListener("submit", e => { e.preventDefault(); calculateProfit(); savePilotInputs(); });
   $("pilotForm").addEventListener("submit", e => { e.preventDefault(); savePilotInputs(); });
-
-  $("stockForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const product = $("stockProduct").value.trim();
-    const qty = num("stockQty");
-    const min = num("stockMin");
-    if (!product) return;
-    state.stock.push({ product, sku: $("stockSku").value.trim(), qty, min });
-    $("stockForm").reset();
-    persist();
-  });
-
-  $("cashForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const amount = num("cashAmount");
-    if (!amount) return;
-    state.cash.push({ type: $("cashType").value, amount, description: $("cashDescription").value.trim() });
-    $("cashForm").reset();
-    persist();
-  });
-
-  $("creativeForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const spend = num("creativeSpend"), revenue = num("creativeRevenue"), conversions = num("creativeConversions");
-    state.creatives.push({ name: $("creativeName").value.trim(), spend, impressions: num("creativeImpressions"), ctr: num("creativeCTR"), conversions, revenue, roas: spend ? revenue / spend : 0 });
-    $("creativeForm").reset();
-    persist();
-  });
-
-  $("actionForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const text = $("actionText").value.trim();
-    if (!text) return;
-    state.actions.push({ text, priority: $("actionPriority").value, done: false });
-    $("actionForm").reset();
-    persist();
-  });
-
-  document.addEventListener("click", e => {
-    const b = e.target.closest("button[data-action]");
-    if (!b) return;
-    const i = Number(b.dataset.index), a = b.dataset.action;
-    if (a === "delete-stock") state.stock.splice(i, 1);
-    if (a === "delete-cash") state.cash.splice(i, 1);
-    if (a === "delete-creative") state.creatives.splice(i, 1);
-    persist();
-  });
-
-  document.addEventListener("change", e => {
-    const el = e.target.closest("input[data-action]");
-    if (!el) return;
-    const i = Number(el.dataset.index);
-    if (el.dataset.action === "toggle-action") state.actions[i].done = el.checked;
-    if (el.dataset.action === "toggle-task") state.tasks[i].done = el.checked;
-    persist();
-  });
+  $("stockForm").addEventListener("submit", e => { e.preventDefault(); const product = $("stockProduct").value.trim(); const qty = num("stockQty"); const min = num("stockMin"); if (!product) return; state.stock.push({ product, sku: $("stockSku").value.trim(), qty, min }); $("stockForm").reset(); persist(); });
+  $("cashForm").addEventListener("submit", e => { e.preventDefault(); const amount = num("cashAmount"); if (!amount) return; state.cash.push({ type: $("cashType").value, amount, description: $("cashDescription").value.trim() }); $("cashForm").reset(); persist(); });
+  $("creativeForm").addEventListener("submit", e => { e.preventDefault(); const spend = num("creativeSpend"), revenue = num("creativeRevenue"), conversions = num("creativeConversions"); state.creatives.push({ name: $("creativeName").value.trim(), spend, impressions: num("creativeImpressions"), ctr: num("creativeCTR"), conversions, revenue, roas: spend ? revenue / spend : 0 }); $("creativeForm").reset(); persist(); });
+  $("actionForm").addEventListener("submit", e => { e.preventDefault(); const text = $("actionText").value.trim(); if (!text) return; state.actions.push({ text, priority: $("actionPriority").value, done: false }); $("actionForm").reset(); persist(); });
+  document.addEventListener("click", e => { const b = e.target.closest("button[data-action]"); if (!b) return; const i = Number(b.dataset.index), a = b.dataset.action; if (a === "delete-stock") state.stock.splice(i, 1); if (a === "delete-cash") state.cash.splice(i, 1); if (a === "delete-creative") state.creatives.splice(i, 1); persist(); });
+  document.addEventListener("change", e => { const el = e.target.closest("input[data-action]"); if (!el) return; const i = Number(el.dataset.index); if (el.dataset.action === "toggle-action") state.actions[i].done = el.checked; if (el.dataset.action === "toggle-task") state.tasks[i].done = el.checked; persist(); });
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  for (const [id, value] of Object.entries({
-    ads: state.inputs.ads, orders: state.inputs.orders, revenue: state.inputs.revenue, salePrice: state.inputs.sellingPrice,
-    landedCost: state.inputs.landedCost, variableFees: state.inputs.variableFees, targetContribution: state.inputs.targetContribution
-  })) setInput(id, value);
+  for (const [id, value] of Object.entries({ ads: state.inputs.ads, orders: state.inputs.orders, revenue: state.inputs.revenue, salePrice: state.inputs.sellingPrice, landedCost: state.inputs.landedCost, variableFees: state.inputs.variableFees, targetContribution: state.inputs.targetContribution })) setInput(id, value);
   bind();
   render();
   calculateLanded();
