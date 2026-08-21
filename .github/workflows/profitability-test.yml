@@ -3,7 +3,10 @@ name: Profitability Engine Test
 on:
   push:
     branches:
+      - main
       - v4-development
+      - 'feat/**'
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -20,4 +23,4 @@ jobs:
           node-version: '24'
 
       - name: Run profitability engine tests
-        run: node -e "import('./v4/engines/profitability-engine.test.js')"
+        run: node v4/engines/profitability-engine.test.js
