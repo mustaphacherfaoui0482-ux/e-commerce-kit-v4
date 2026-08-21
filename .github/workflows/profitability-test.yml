@@ -1,4 +1,4 @@
-name: Profitability Engine Test
+name: V4 Core Engine Tests
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-profitability-engine:
+  test-core-engines:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,5 +22,8 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Run profitability engine tests
+      - name: Test profitability engine
         run: node v4/engines/profitability-engine.test.js
+
+      - name: Test business health diagnostics
+        run: node v4/domain/diagnostics.test.js
