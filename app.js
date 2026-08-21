@@ -11,18 +11,9 @@ const esc = (value) => String(value ?? "").replace(/[&<>\"']/g, c => ({ "&": "&a
 
 let state = loadStore();
 
-function persist() {
-  state = saveStore(state);
-  render();
-}
-
-function setInput(id, value) {
-  if ($(id)) $(id).value = value;
-}
-
-function health() {
-  return calculateBusinessHealth({ ...state.inputs, stock: state.stock, cash: state.cash });
-}
+function persist() { state = saveStore(state); render(); }
+function setInput(id, value) { if ($(id)) $(id).value = value; }
+function health() { return calculateBusinessHealth({ ...state.inputs, stock: state.stock, cash: state.cash }); }
 
 function render() {
   const h = health();
@@ -35,15 +26,25 @@ function render() {
   $("stockTotal").textContent = state.stock.reduce((s, x) => s + Math.max(0, Number(x.qty) || 0), 0);
   const cash = state.cash.reduce((s, x) => s + (x.type === "in" ? 1 : -1) * Math.max(0, Number(x.amount) || 0), 0);
   $("cashTotal").textContent = money(cash);
+
+  const kpiGrid = $("kpi")?.querySelector(".grid");
+  for (const [id, label] of [["kpiContribution", "Contribution"], ["kpiMargin", "Marge contribution"]]) {
+    if (kpiGrid && !$(id)) {
+      const card = document.createElement("div");
+      card.className = "card metric";
+      card.innerHTML = `<label>${label}</label><strong id="${id}">—</strong>`;
+      kpiGrid.appendChild(card);
+    }
+  }
   const contribution = calculateProfitability({ sellingPrice: state.inputs.sellingPrice, landedCost: state.inputs.landedCost, variableFees: state.inputs.variableFees, cac: state.inputs.orders ? state.inputs.ads / state.inputs.orders : 0, targetContribution: state.inputs.targetContribution });
-  $("kpiContribution").textContent = money(contribution.contribution);
-  $("kpiMargin").textContent = `${(contribution.contributionMargin * 100).toFixed(1)} %`;
+  if ($("kpiContribution")) $("kpiContribution").textContent = money(contribution.contribution);
+  if ($("kpiMargin")) $("kpiMargin").textContent = `${(contribution.contributionMargin * 100).toFixed(1)} %`;
+
   $("healthStatus").textContent = h.score == null ? h.title : `${h.title} · ${h.score}/100`;
   $("healthMessage").textContent = h.message;
   $("healthDetails").textContent = h.score == null ? h.problem : `${h.problem} ${h.action}`;
   $("priorityAction").textContent = h.action;
   $("alerts").innerHTML = alerts.length ? alerts.map(a => `<div class="alert ${a.level}">${a.level === "danger" ? "🔴" : "🟠"} ${esc(a.text)}</div>`).join("") : `<div class="empty">🟢 Aucun problème critique détecté.</div>`;
-
   $("stockList").innerHTML = state.stock.length ? state.stock.map((x, i) => `<div class="list-row"><span><strong>${esc(x.product || "Produit")}</strong><small>${esc(x.sku || "Sans SKU")}</small></span><span>${x.qty} u. ${x.qty <= x.min ? "🔴" : "🟢"} <button data-action="delete-stock" data-index="${i}">Supprimer</button></span></div>`).join("") : `<div class="empty">Aucun stock enregistré.</div>`;
   $("cashList").innerHTML = state.cash.length ? state.cash.map((x, i) => `<div class="list-row"><span>${x.type === "in" ? "➕" : "➖"} ${esc(x.description || "Opération")}</span><span>${money(x.amount)} <button data-action="delete-cash" data-index="${i}">×</button></span></div>`).join("") : `<div class="empty">Aucune opération.</div>`;
   $("creativeList").innerHTML = state.creatives.length ? state.creatives.map((x, i) => `<div class="list-row"><span><strong>${esc(x.name || "Créatif")}</strong><small>CTR ${Number(x.ctr || 0).toFixed(2)} % · ${x.conversions || 0} conv.</small></span><span>ROAS ${Number(x.roas || 0).toFixed(2)} · <strong>${esc(classifyCreative(Number(x.roas || 0)))}</strong> <button data-action="delete-creative" data-index="${i}">×</button></span></div>`).join("") : `<div class="empty">Aucun test créatif.</div>`;
@@ -54,37 +55,23 @@ function render() {
 }
 
 function calculateLanded() {
-  const result = calculateLandedCost({
-    quantity: num("quantity"), productCost: num("productCost"), customization: num("customCost"), packaging: num("packCost"),
-    factoryToChinaWarehouse: num("factoryToChinaWarehouse"), chinaExportFees: num("chinaExportFees"), internationalShipping: num("internationalShipping"), insurance: num("insurance"), customsClearance: num("customsClearance"), customsDuty: num("customsDuty"), portFees: num("portFees"), franceWarehouseTransport: num("franceWarehouseTransport"), inspection: num("inspection"), otherLogistics: num("otherLogistics")
-  });
+  const result = calculateLandedCost({ quantity: num("quantity"), productCost: num("productCost"), customization: num("customCost"), packaging: num("packCost"), factoryToChinaWarehouse: num("factoryToChinaWarehouse"), chinaExportFees: num("chinaExportFees"), internationalShipping: num("internationalShipping"), insurance: num("insurance"), customsClearance: num("customsClearance"), customsDuty: num("customsDuty"), portFees: num("portFees"), franceWarehouseTransport: num("franceWarehouseTransport"), inspection: num("inspection"), otherLogistics: num("otherLogistics") });
   $("landedResult").textContent = `${money(result.landedCostPerUnit)} / unité · ${money(result.totalCost)} total`;
   setInput("landedCost", result.landedCostPerUnit.toFixed(2));
 }
 
 function calculateProfit() {
-  const r = calculateProfitability({
-    sellingPrice: num("salePrice"), landedCost: num("landedCost"), variableFees: num("variableFees"),
-    cac: state.inputs.orders ? state.inputs.ads / state.inputs.orders : 0, targetContribution: num("targetContribution")
-  });
+  const r = calculateProfitability({ sellingPrice: num("salePrice"), landedCost: num("landedCost"), variableFees: num("variableFees"), cac: state.inputs.orders ? state.inputs.ads / state.inputs.orders : 0, targetContribution: num("targetContribution") });
   $("profitResult").innerHTML = `<strong>${money(r.contribution)}</strong> contribution · ${(r.contributionMargin * 100).toFixed(1)} %<br><small>CAC max : ${money(r.maxCac)} · Prix minimum : ${money(r.minimumSellingPrice)}</small>`;
 }
 
 function savePilotInputs() {
-  state.inputs = {
-    ...state.inputs, ads: num("ads"), orders: num("orders"), revenue: num("revenue"), sellingPrice: num("salePrice"),
-    landedCost: num("landedCost"), variableFees: num("variableFees"), targetContribution: num("targetContribution")
-  };
+  state.inputs = { ...state.inputs, ads: num("ads"), orders: num("orders"), revenue: num("revenue"), sellingPrice: num("salePrice"), landedCost: num("landedCost"), variableFees: num("variableFees"), targetContribution: num("targetContribution") };
   persist();
 }
 
 function bind() {
-  document.querySelectorAll("[data-page]").forEach(b => b.addEventListener("click", () => {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    $(b.dataset.page).classList.add("active");
-    document.querySelectorAll("nav button").forEach(x => x.classList.remove("active"));
-    b.classList.add("active");
-  }));
+  document.querySelectorAll("[data-page]").forEach(b => b.addEventListener("click", () => { document.querySelectorAll(".page").forEach(p => p.classList.remove("active")); $(b.dataset.page).classList.add("active"); document.querySelectorAll("nav button").forEach(x => x.classList.remove("active")); b.classList.add("active"); }));
   $("landedForm").addEventListener("submit", e => { e.preventDefault(); calculateLanded(); });
   $("profitForm").addEventListener("submit", e => { e.preventDefault(); calculateProfit(); savePilotInputs(); });
   $("pilotForm").addEventListener("submit", e => { e.preventDefault(); savePilotInputs(); });
@@ -98,8 +85,5 @@ function bind() {
 
 window.addEventListener("DOMContentLoaded", () => {
   for (const [id, value] of Object.entries({ ads: state.inputs.ads, orders: state.inputs.orders, revenue: state.inputs.revenue, salePrice: state.inputs.sellingPrice, landedCost: state.inputs.landedCost, variableFees: state.inputs.variableFees, targetContribution: state.inputs.targetContribution })) setInput(id, value);
-  bind();
-  render();
-  calculateLanded();
-  calculateProfit();
+  bind(); render(); calculateLanded(); calculateProfit();
 });
