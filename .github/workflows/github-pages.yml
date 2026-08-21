@@ -34,7 +34,35 @@ jobs:
           cp business-health.js _site/business-health.js
           cp -r v4 _site/v4
           if [ -f manifest.json ]; then cp manifest.json _site/manifest.json; fi
-          sed -i 's#</body>#<script type="module" src="./app.js"></script></body>#' _site/index.html
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('_site/index.html')
+          s = p.read_text(encoding='utf-8')
+          duplicate = '''    option.textContent =
+      item.product +
+      (item.sku ? " • " + item.sku : "") +
+      " — " +
+      item.qty +
+      " disponibles";
+
+    select.appendChild(option);
+
+  });
+
+}'''
+          marker = duplicate + '\nfunction addCash()'
+          if marker in s:
+              s = s.replace(marker, 'function addCash()', 1)
+          s = s.replace('</body>', '<script type="module" src="./app.js"></script></body>', 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Validate published JavaScript modules
+        run: |
+          node --check _site/app.js
+          node --check _site/v4/domain/rules.js
+          node --check _site/v4/domain/diagnostics.js
+          node --check _site/v4/state/store.js
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
