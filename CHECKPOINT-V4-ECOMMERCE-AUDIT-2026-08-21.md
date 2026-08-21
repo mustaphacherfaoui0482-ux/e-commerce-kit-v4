@@ -4,15 +4,29 @@
 **Base:** `main`  
 **Feature branch:** `feat/master-v4-ecommerce-alignment`
 
+## Current branch reconciliation
+
+The feature branch is **30 commits ahead of `main` and 0 commits behind** at the time of this checkpoint. The current diff is limited to the V4 application/runtime, business-health centralization, validation/CI, GitHub Pages fallback and this checkpoint documentation. No unrelated product feature or visual redesign is included in the current diff.
+
 ## Current validation status
 
 - Previously validated V4 engine tests passed, including profitability, landed cost and Business Health.
 - The deterministic runtime validation script is part of `npm test`.
 - The newest commits have not yet received a new confirmed CI result; no success is claimed for them.
-- A subsequent validator modification was refused because the target file SHA had changed; no overwrite was performed.
 - Vercel remains blocked by the observed `upgradeToPro=build-rate-limit` condition.
 - Browser validation is not proven.
 - GitHub Pages availability/configuration is not independently confirmed.
+
+## Corrections implemented
+
+- Centralized V4 business rules and Business Health diagnostics.
+- Centralized neutral local state.
+- Centralized application runtime in `app.js` using the existing landed-cost and profitability engines.
+- Removed the legacy duplicated Business Health implementation in favor of a compatibility bridge.
+- Added unified `npm test` coverage.
+- Added deterministic runtime/file/syntax/structure validation.
+- Hardened the GitHub Pages artifact preparation and publication checks.
+- Kept automatic core validation in the main CI workflow and made redundant standalone validation workflows manual.
 
 ## Remaining execution queue
 
@@ -23,7 +37,7 @@
 5. Confirm no console/runtime error remains.
 6. Confirm the visual shell remains unchanged.
 7. Verify real inputs feed the centralized Opportunity/business runtime correctly.
-8. Reconcile the final diff against `main`.
+8. Reconcile the final diff against `main` — current reconciliation completed: 30 ahead / 0 behind.
 9. Only after positive evidence, mark PR #2 ready and merge to `main`.
 
 ## Architectural boundary
