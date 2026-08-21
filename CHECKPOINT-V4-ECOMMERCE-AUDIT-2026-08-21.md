@@ -33,20 +33,21 @@ The MASTER also requires shared reference data, centralized critical calculation
 - Replaced the legacy `business-health.js` implementation with a compatibility bridge to the new runtime.
 - Expanded CI triggers to `main`, `v4-development`, feature branches and pull requests.
 - Added a GitHub Pages deployment workflow as a Vercel-independent deployment path.
-- The Pages build injects the new `app.js` runtime into the copied site at build time, avoiding a destructive rewrite of the existing visual source while allowing the centralized runtime to be exercised when Pages is actually enabled.
+- Hardened the Pages build so the copied artifact removes the known duplicated `updateOrderProducts()` fragment before publication and then injects the centralized `app.js` runtime.
+- Added publication-time assertions for the sanitized artifact and module syntax checks.
 
 ## Current validation status
 
-- GitHub Actions engine tests: passed on the previous validated PR commit.
+- GitHub Actions engine tests: passed on the previously validated PR commit.
 - PR #2: open, draft, mergeable.
-- Latest feature-branch commit contains the Pages fallback workflow.
+- Latest feature branch contains the hardened Pages workflow.
 - Vercel remains blocked by the previously observed build-rate-limit condition.
 - Browser validation is still not proven.
 - GitHub Pages availability/configuration has not been independently confirmed; the workflow is prepared but that is not the same as a successful deployment.
 
 ## Remaining validation
 
-1. Run/confirm CI against the latest feature commit.
+1. Confirm CI against the latest feature commit.
 2. If GitHub Pages is enabled for the repository, run the Pages workflow and inspect its deployed result.
 3. Browser validation of the deployed page.
 4. Confirm no console/runtime error remains.
