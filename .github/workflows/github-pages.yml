@@ -57,6 +57,13 @@ jobs:
           p.write_text(s, encoding='utf-8')
           PY
 
+      - name: Validate published artifact
+        run: |
+          test "$(grep -o 'option.textContent' _site/index.html | wc -l | tr -d ' ')" -eq 1
+          test "$(grep -o 'src="./app.js"' _site/index.html | wc -l | tr -d ' ')" -eq 1
+          test -f _site/v4/engines/profitability-engine.js
+          test -f _site/v4/engines/landed-cost-engine.js
+
       - name: Validate published JavaScript modules
         run: |
           node --check _site/app.js
