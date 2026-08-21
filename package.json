@@ -1,0 +1,9 @@
+{
+  "name": "e-commerce-kit-v4",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:profitability": "node v4/engines/profitability-engine.test.js",
+    "test:landed-cost": "node v4/engines/landed-cost-engine.test.js"
+  }
+}
