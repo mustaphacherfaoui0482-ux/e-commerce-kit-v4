@@ -2,7 +2,7 @@ const KEY = "ecommerce_kit_v4";
 const VERSION = 2;
 const defaults = () => ({
   version: VERSION,
-  inputs: { ads: 500, orders: 35, revenue: 1396.5, sellingPrice: 39.9, landedCost: 19.72, variableFees: 0, targetContribution: 0 },
+  inputs: { ads: 500, orders: 35, revenue: 1396.5, sellingPrice: 39.9, landedCost: 19.72, variableFees: 0, targetContribution: 5 },
   stock: [], cash: [], creatives: [], actions: [],
   tasks: Array.from({ length: 30 }, (_, i) => ({ day: i + 1, done: false })),
 });
