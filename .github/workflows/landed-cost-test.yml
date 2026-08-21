@@ -1,4 +1,4 @@
-name: Test du moteur Coût rendu France
+name: V4 Engine Tests
 
 on:
   push:
@@ -7,17 +7,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-landed-cost:
+  landed-cost:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Récupérer le dépôt
-        uses: actions/checkout@v6
-
-      - name: Installer Node.js
-        uses: actions/setup-node@v7
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '24'
-
-      - name: Tester le moteur Coût rendu France
-        run: node v4/engines/landed-cost-engine.test.js
+          node-version: 24
+      - name: Run landed cost tests
+        run: node --test v4/engines/landed-cost-engine.test.js
