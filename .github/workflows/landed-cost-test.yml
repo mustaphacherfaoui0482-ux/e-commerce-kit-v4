@@ -3,7 +3,10 @@ name: Test du moteur Coût rendu France
 on:
   push:
     branches:
+      - main
       - v4-development
+      - 'feat/**'
+  pull_request:
   workflow_dispatch:
 
 jobs:
