@@ -1,4 +1,4 @@
-name: Profitability Engine Test
+name: V4 Profitability Tests
 
 on:
   push:
@@ -7,17 +7,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-profitability-engine:
+  profitability:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
-          node-version: '24'
-
-      - name: Run profitability engine tests
-        run: node -e "import('./v4/engines/profitability-engine.test.js')"
+          node-version: 24
+      - name: Run profitability tests
+        run: node --test v4/engines/profitability-engine.test.js
