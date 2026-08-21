@@ -12,7 +12,8 @@ The MASTER also requires shared reference data, centralized critical calculation
 
 ## Corrections implemented
 
-- Added root `package.json` with ESM configuration and a unified `npm test` command covering profitability, landed cost, Business Health and runtime syntax.
+- Added root `package.json` with ESM configuration and a unified `npm test` command covering profitability, landed cost, Business Health, runtime syntax and structural runtime validation.
+- Added `scripts/validate-v4-runtime.mjs` for deterministic file, syntax and dashboard-structure checks.
 - Added centralized `v4/domain/rules.js`.
 - Added centralized `v4/domain/diagnostics.js` and tests.
 - Added centralized `v4/state/store.js` with neutral empty defaults.
@@ -23,23 +24,23 @@ The MASTER also requires shared reference data, centralized critical calculation
 - Added stock/order/cash/creative/action runtime handling.
 - Replaced the legacy `business-health.js` implementation with a compatibility bridge to the new runtime.
 - Expanded CI triggers to `main`, `v4-development`, feature branches and pull requests.
-- Consolidated automatic V4 validation into the core workflow; the landed-cost workflow is now manual to avoid duplicate automatic test runs.
+- Consolidated automatic V4 validation into the core workflow; standalone runtime and landed-cost workflows are now manual to avoid duplicate automatic test runs.
 - Added a GitHub Pages deployment workflow as a Vercel-independent deployment path.
 - Hardened the Pages build so the copied artifact removes the known duplicated `updateOrderProducts()` fragment before publication and then injects the centralized `app.js` runtime.
 - Added publication-time assertions for the sanitized artifact and module syntax checks.
 
 ## Current validation status
 
-- The previously validated `V4 Core Engine Tests` run passed, including profitability and Business Health.
-- The previously validated landed-cost run passed.
-- The latest workflow edits have not yet produced a new workflow run because the feature branch is not automatically deployed from the connector write operation itself; no new run is claimed here.
+- Previously validated V4 engine tests passed, including profitability, landed cost and Business Health.
+- The deterministic runtime validation script is now part of `npm test`.
+- The latest workflow edits have not yet produced a new workflow run; no success is claimed for the newest commit until GitHub reports it.
 - Vercel remains blocked by the observed `upgradeToPro=build-rate-limit` status.
 - Browser validation is not proven.
 - GitHub Pages availability/configuration is not independently confirmed; the workflow is prepared but that is not the same as a successful deployment.
 
 ## Remaining validation
 
-1. Push/trigger CI on the latest feature commit and confirm `npm test`.
+1. Trigger/confirm CI on the latest feature commit and confirm `npm test`.
 2. If GitHub Pages is enabled, run the Pages workflow and inspect the deployment.
 3. Browser validation of the deployed page.
 4. Confirm no console/runtime error remains.
