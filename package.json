@@ -1,0 +1,8 @@
+{
+  "name": "e-commerce-kit-v4",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test v4/**/*.test.js"
+  }
+}
