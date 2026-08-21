@@ -1,0 +1,23 @@
+name: V4 Runtime Validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - v4-development
+      - 'feat/**'
+  workflow_dispatch:
+
+jobs:
+  validate-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Validate runtime
+        run: node scripts/validate-v4-runtime.mjs
