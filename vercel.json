@@ -1,4 +1,4 @@
 {
-  "buildCommand": "node scripts/prepare-vercel.mjs",
+  "buildCommand": "node scripts/prepare-vercel.mjs && test -f index.html && test -f app.js",
   "outputDirectory": "."
 }
