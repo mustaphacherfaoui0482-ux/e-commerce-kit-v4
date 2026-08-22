@@ -17,6 +17,10 @@ const result = calculateLandedCost({
   otherLogistics: 20
 });
 
+if (result.complete !== true) {
+  throw new Error("Le calcul complet doit être marqué complete=true");
+}
+
 const expectedTotal =
   100 * 5 +
   100 * 0.50 +
@@ -45,6 +49,36 @@ if (result.landedCostPerUnit !== expectedUnitCost) {
   throw new Error(
     `Coût rendu unitaire incorrect : ${result.landedCostPerUnit} au lieu de ${expectedUnitCost}`
   );
+}
+
+// Test : donnée manquante ≠ zéro
+{
+  const incomplete = calculateLandedCost({
+    quantity: 100,
+    productCost: 5,
+    customization: 0.50,
+    packaging: 0.30,
+    factoryToChinaWarehouse: 50,
+    chinaExportFees: null,
+    internationalShipping: 300,
+    insurance: 30,
+    customsClearance: 80,
+    customsDuty: 100,
+    portFees: 40,
+    franceWarehouseTransport: 60,
+    inspection: 50,
+    otherLogistics: 20
+  });
+
+  if (incomplete.complete !== false) {
+    throw new Error("Une donnée manquante doit rendre le calcul incomplet");
+  }
+  if (incomplete.totalCost !== null || incomplete.landedCostPerUnit !== null) {
+    throw new Error("Un calcul incomplet ne doit pas produire un coût numérique");
+  }
+  if (!incomplete.missingFields.includes("chinaExportFees")) {
+    throw new Error("Le champ manquant doit être identifié");
+  }
 }
 
 console.log("🟢 Test Coût rendu France réussi");
