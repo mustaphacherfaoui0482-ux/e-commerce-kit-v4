@@ -1,19 +1,58 @@
-export function calculateLandedCost({
-  quantity = 0,
-  productCost = 0,
-  customization = 0,
-  packaging = 0,
-  factoryToChinaWarehouse = 0,
-  chinaExportFees = 0,
-  internationalShipping = 0,
-  insurance = 0,
-  customsClearance = 0,
-  customsDuty = 0,
-  portFees = 0,
-  franceWarehouseTransport = 0,
-  inspection = 0,
-  otherLogistics = 0
-}) {
+const REQUIRED_FIELDS = [
+  "quantity",
+  "productCost",
+  "customization",
+  "packaging",
+  "factoryToChinaWarehouse",
+  "chinaExportFees",
+  "internationalShipping",
+  "insurance",
+  "customsClearance",
+  "customsDuty",
+  "portFees",
+  "franceWarehouseTransport",
+  "inspection",
+  "otherLogistics"
+];
+
+function isProvidedNumber(value) {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+export function calculateLandedCost(input = {}) {
+  const missingFields = REQUIRED_FIELDS.filter(
+    (field) => !isProvidedNumber(input[field])
+  );
+
+  if (missingFields.length) {
+    return {
+      complete: false,
+      missingFields,
+      goodsCost: null,
+      customizationCost: null,
+      packagingCost: null,
+      totalCost: null,
+      landedCostPerUnit: null
+    };
+  }
+
+  const {
+    quantity,
+    productCost,
+    customization,
+    packaging,
+    factoryToChinaWarehouse,
+    chinaExportFees,
+    internationalShipping,
+    insurance,
+    customsClearance,
+    customsDuty,
+    portFees,
+    franceWarehouseTransport,
+    inspection,
+    otherLogistics
+  } = input;
+
   const goodsCost =
     quantity * productCost;
 
@@ -44,6 +83,8 @@ export function calculateLandedCost({
       : 0;
 
   return {
+    complete: true,
+    missingFields: [],
     goodsCost,
     customizationCost,
     packagingCost,
