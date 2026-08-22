@@ -26,6 +26,7 @@ function assertClose(actual, expected, message, tolerance = 0.000001) {
     targetContribution: 5,
   });
 
+  assertEqual(result.complete, true, "Données complètes");
   assertEqual(result.contributionBeforeAds, 27, "Contribution avant publicité");
   assertEqual(result.contribution, 19, "Contribution après CAC");
   assertClose(result.contributionMargin, 19 / 40, "Marge de contribution");
@@ -59,6 +60,22 @@ function assertClose(actual, expected, message, tolerance = 0.000001) {
   });
 
   assertEqual(result.contributionMargin, 0, "Marge avec prix nul");
+}
+
+// Test 4 : donnée manquante ≠ zéro
+{
+  const result = calculateProfitability({
+    sellingPrice: 40,
+    landedCost: null,
+    variableFees: 3,
+    cac: 8,
+    targetContribution: 5,
+  });
+
+  assertEqual(result.complete, false, "Données incomplètes");
+  assertEqual(result.contribution, null, "Contribution inconnue");
+  assertEqual(result.profitable, null, "Rentabilité inconnue");
+  assertEqual(result.missingFields.includes("landedCost"), true, "Champ manquant identifié");
 }
 
 console.log("ProfitabilityEngine : tous les tests sont passés.");
